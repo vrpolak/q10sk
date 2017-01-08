@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  vi: set et smarttab sw=4 tabstop=4: -->
+<!--
+    The q10sk project default parent pom file.
+    Copyright (C) 2017  Vratko Polak
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!-- TODO: Also add information on how to contact you by electronic and paper mail. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.vrpolak.q10sk</groupId>
+    <artifactId>parent</artifactId>
+    <version>0.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <profiles>
+        <profile>
+            <!-- Shamelessly copied from org.opendaylight.odlparent:odlparent-lite and adapted -->
+            <!-- FIXME: By copying from file with Eclipse Public License v1.0, this file may be prohibited from keeping its current license. -->
+            <id>q</id>
+            <properties>
+                <skipTests>true</skipTests>
+                <!-- But NOT <maven.test.skip>true, as that's for compiling, not running, tests;
+                     and that's usually quick.  Skipping test compilation with -Pq with maven.test.skip would be
+                     particularly confusing when used in a project with maven-jar-plugin <goal>test-jar, so don't.)  -->
+                <skipIT>true</skipIT>
+                <skipITs>true</skipITs>
+                <maven.javadoc.skip>true</maven.javadoc.skip>
+                <maven.source.skip>true</maven.source.skip>
+                <checkstyle.skip>true</checkstyle.skip>
+                <findbugs.skip>true</findbugs.skip>
+                <invoker.skip>true</invoker.skip>
+                <enforcer.skip>true</enforcer.skip>
+                <!-- FIXME: Remove unused, add used. -->
+            </properties>
+        </profile>
+    </profiles>
+    <!-- TODO: Add all the other stuff to eventually conform to Maven Central requirements. -->
+</project>
