@@ -57,9 +57,12 @@ Aside of K, S and function application, q10sk contains 0, 1 and Q,
 which are combinators (supercombinators in fact) with a special meaning.
 
 Reduction rules:
-    0xy = 0(xy)
-    1xy = 1(xy)
-    Qxyz = Q(xz)(yz)
+
+<code>0xy = 0(xy)</code>
+
+<code>1xy = 1(xy)</code>
+
+<code>Qxyz = Q(xz)(yz)</code>
 
 The special meaning applies to the whole tree (as opposed to subree) causing the following side-effects:
 If the tree has form "0x", bit zero is written to output and execution continues with tree "x".
@@ -77,8 +80,13 @@ The system cannot distingush the halted state from a running state which happede
 to require no IO for a period of time (unless the system can get such info from the interpreter).
 
 That is it. Here are the reduction rules in unlambda syntax:
-    ``Kxy = x
-    ```Sxyz = ``xz`yz
-    ``0xy = `0`xy
-    ``1xy = `1`xy
-    ```Qxyz = ``Q`xz`yz
+
+<code>``Kxy = x</code>
+
+<code>```Sxyz = ``xz`yz</code>
+
+<code>``0xy = `0`xy</code>
+
+<code>``1xy = `1`xy</code>
+
+<code>```Qxyz = ``Q`xz`yz</code>
