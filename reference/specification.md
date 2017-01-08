@@ -81,12 +81,12 @@ to require no IO for a period of time (unless the system can get such info from 
 
 That is it. Here are the reduction rules in unlambda syntax:
 
-<code>``Kxy = x</code>
+<code>\`\`Kxy = x</code>
 
-<code>```Sxyz = ``xz`yz</code>
+<code>\`\`\`Sxyz = \`\`xz\`yz</code>
 
-<code>``0xy = `0`xy</code>
+<code>\`\`0xy = \`0\`xy</code>
 
-<code>``1xy = `1`xy</code>
+<code>\`\`1xy = \`1\`xy</code>
 
-<code>```Qxyz = ``Q`xz`yz</code>
+<code>\`\`\`Qxyz = \`\`Q\`xz\`yz</code>
