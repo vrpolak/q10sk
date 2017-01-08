@@ -50,6 +50,8 @@ In purely functional languages, order of evaluation does not mater,
 but most implementations are assumed to be lazy,
 which means only the function (not the argument) is brought to normal form
 before function application is executed.
+A common exception to lazyness rule is to reduce K expressions even for argument,
+as that is guaranteed to save space.
 
 Aside of K, S and function application, q10sk contains 0, 1 and Q,
 which are combinators (supercombinators in fact) with a special meaning.

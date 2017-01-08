@@ -1,5 +1,6 @@
 # q10sk
-Minimalistic programming language.
+Project q10sk, a minimalistic model of computation.
+
 Pronounced the same way as "kiosk":
 https://www.youtube.com/watch?v=ZXXpqIDrcw8
 
