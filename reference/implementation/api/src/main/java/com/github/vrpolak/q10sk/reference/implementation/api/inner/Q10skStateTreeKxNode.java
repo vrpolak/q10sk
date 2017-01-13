@@ -19,24 +19,12 @@
 package com.github.vrpolak.q10sk.reference.implementation.api;
 
 /**
- * Immutable object representing an inner node of q10sk state tree, so a function application.
+ * Immutable object representing an inner node of q10sk state tree, where the function is K.
  *
- * <p>Each Q10skStateTreeGeneralNode instance with isApplication==true has to be of a class which implements this interface.
+ * <p>Each Q10skStateTreeInnerNode instance with K as a function could be of a class which implements this interface.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeInnerNode extends Q10skStateTreeGeneralNode {
-    /*
-     * Return reference to the function node.
-     *
-     * @return node of the function.
-     */
-    Q10skStateTreeGeneralNode function();
-
-    /*
-     * Return reference to the argument node.
-     *
-     * @return node of the argument
-     */
-    Q10skStateTreeGeneralNode argument();
+public interface Q10skStateTreeKxNode extends Q10skStateTreeInnerNode {
+    // No specific methods.
 }

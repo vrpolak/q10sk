@@ -30,4 +30,11 @@ public interface Q10skStateTreeGeneralNode {
      * @return boolean
      */
     boolean isApplication();
+
+    /**
+     * Return a new node which applies (without evaluating) this as a function to the given argument.
+     *
+     * @return node, perhaps newly constructed, perhaps reference to existing one.
+     */
+    Q10skStateTreeInnerNode applyTo(final Q10skStateTreeGeneralNode argument);
 }
