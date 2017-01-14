@@ -25,11 +25,6 @@ package com.github.vrpolak.q10sk.reference.implementation.api;
  */
 public interface Q10skStateTreeLeafNode extends Q10skStateTreeGeneralNode {
 
-    /*
-     * Return 'K', 'S', '0', '1' or 'Q', depending on which combinator is in this leaf.
-     *
-     * @return name of the combinator.
-     */
-    char name();
+    // No method for getting the leaf identity, rely on instanceof instead.
 
 }

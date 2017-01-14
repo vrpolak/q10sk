@@ -25,16 +25,6 @@ package com.github.vrpolak.q10sk.reference.implementation.api;
  */
 public interface Q10skStateTreeQNode extends Q10skStateTreeLeafNode {
 
-    /*
-     * Return the name of this leaf, which is 'Q'.
-     *
-     * @return name 'Q'
-     */
-    @Override
-    default char name() {
-        return 'Q';
-    }
-
     /**
      * Return a new node which applies (without evaluating) this as a function to the given argument.
      *
