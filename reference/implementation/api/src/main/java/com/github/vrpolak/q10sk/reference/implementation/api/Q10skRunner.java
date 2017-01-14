@@ -29,6 +29,7 @@ package com.github.vrpolak.q10sk.reference.implementation.api;
  * @author Vratko Polak
  */
 public interface Q10skRunner {
+
     /*
      * Run program defined by state, calling consumer and producer for output and input repsectively.
      *
@@ -39,4 +40,5 @@ public interface Q10skRunner {
      * @param producer  the producer to call when the program requires input, mutated on cal
      */
     void run(final Q10skStateTreeRootNode state, final BitConsumer consumer, final BitProducer producer);
+
 }

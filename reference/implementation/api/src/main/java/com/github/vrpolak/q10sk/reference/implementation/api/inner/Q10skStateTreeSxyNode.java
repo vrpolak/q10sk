@@ -21,10 +21,18 @@ package com.github.vrpolak.q10sk.reference.implementation.api;
 /**
  * Immutable object representing an inner node of q10sk state tree, where the function is Sx.
  *
- * <p>Each Q10skStateTreeInnerNode instance with Sx as a function could be of a class which implements this interface.
+ * <p>Each Q10skStateTreeInnerNode instance with Sx as a function should be of a class which implements this interface.
  *
  * @author Vratko Polak
  */
 public interface Q10skStateTreeSxyNode extends Q10skStateTreeInnerNode {
-    // No specific methods.
+
+    /**
+     * Return a new node which applies (without evaluating) this as a function to the given argument.
+     *
+     * @return result Sxyz node, either newly constructed, or reference to existing one.
+     */
+    @Override
+    Q10skStateTreeSxyzNode applyTo(final Q10skStateTreeGeneralNode argument);
+
 }

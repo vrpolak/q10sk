@@ -24,10 +24,12 @@ package com.github.vrpolak.q10sk.reference.implementation.api;
  * @author Vratko Polak
  */
 public interface ImmutableBit {
+
     /**
      * Return true if the value is zero, return false if the value is one.
      *
      * @return boolean value
      */
     boolean isZero();
+
 }

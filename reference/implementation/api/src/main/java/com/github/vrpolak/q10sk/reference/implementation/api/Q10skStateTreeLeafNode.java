@@ -21,15 +21,15 @@ package com.github.vrpolak.q10sk.reference.implementation.api;
 /**
  * Immutable object representing a leaf node of q10sk state tree, so a known combinator.
  *
- * <p>Each Q10skStateTreeGeneralNode instance with isApplication==false has to be of class which implements this interface.
- *
  * @author Vratko Polak
  */
 public interface Q10skStateTreeLeafNode extends Q10skStateTreeGeneralNode {
+
     /*
      * Return 'K', 'S', '0', '1' or 'Q', depending on which combinator is in this leaf.
      *
      * @return name of the combinator.
      */
     char name();
+
 }

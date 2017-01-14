@@ -24,10 +24,12 @@ package com.github.vrpolak.q10sk.reference.implementation.api;
  * @author Vratko Polak
  */
 public interface BitConsumer {
+
     /**
      * Mutate itself (with side effects) in preparation for consuming the next bit on the next call.
      *
      * @param bit to base the side effects on.
      */
     void consumeBit(final ImmutableBit bit);
+
 }

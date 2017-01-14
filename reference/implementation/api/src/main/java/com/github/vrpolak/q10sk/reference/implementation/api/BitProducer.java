@@ -24,10 +24,12 @@ package com.github.vrpolak.q10sk.reference.implementation.api;
  * @author Vratko Polak
  */
 public interface BitProducer {
+
     /**
      * Return the bit and mutate itself (with side effects) to produce the next bit on the next call.
      *
      * @return new ImmutableBit, it may be a reference to an already produced bit.
      */
     ImmutableBit produceBit();
+
 }

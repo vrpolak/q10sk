@@ -19,21 +19,20 @@
 package com.github.vrpolak.q10sk.reference.implementation.api;
 
 /**
- * Immutable object representing an inner node of q10sk state tree, where the function is Sxy.
+ * Immutable object representing an evaluable node of q10sk state tree, where the function is Sxy.
  *
- * <p>Each Q10skStateTreeInnerNode instance with Sxy as a function could be of a class which implements this interface.
+ * <p>Each Q10skStateTreeInnerNode instance with Sxy as a function should be of a class which implements this interface.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeSxyzNode extends Q10skStateTreeInnerNode {
-    /**
-     * Return the node which corresponds to application of S rule.
+public interface Q10skStateTreeSxyzNode extends Q10skStateTreeEvaluableNode {
+
+    /*
+     * Return reference to the node representing the result of S rule evaluation.
      *
-     * <p>This implements rule Sxyz = xz(yz).
+     * @return result inner node, either newly constructed, or a reference to existing one.
      */
-    default Q10skStateTreeGeneralNode evaluate() {
-        final Q10skStateTreeSxyNode sxy = (Q10skStateTreeSxyNode) function();
-        final Q10skStateTreeSxNode sx = (Q10skStateTreeSxNode) sxy.function();
-        return sx.argument().applyTo(argument()).applyTo(sxy.argument().applyTo(argument()));
-    }
+    @Override
+    Q10skStateTreeInnerNode evaluate();
+
 }

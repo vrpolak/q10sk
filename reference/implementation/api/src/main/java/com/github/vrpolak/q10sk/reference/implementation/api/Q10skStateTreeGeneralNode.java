@@ -24,12 +24,6 @@ package com.github.vrpolak.q10sk.reference.implementation.api;
  * @author Vratko Polak
  */
 public interface Q10skStateTreeGeneralNode {
-    /**
-     * Return true if this node represents an application of a function to an argument, false if primitive leaf.
-     *
-     * @return boolean
-     */
-    boolean isApplication();
 
     /**
      * Return a new node which applies (without evaluating) this as a function to the given argument.
@@ -37,4 +31,5 @@ public interface Q10skStateTreeGeneralNode {
      * @return node, perhaps newly constructed, perhaps reference to existing one.
      */
     Q10skStateTreeInnerNode applyTo(final Q10skStateTreeGeneralNode argument);
+
 }
