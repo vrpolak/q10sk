@@ -24,13 +24,15 @@
         <groupId>com.github.vrpolak.q10sk</groupId>
         <artifactId>parent</artifactId>
         <version>0.0.0-SNAPSHOT</version>
-        <relativePath>../parent</relativePath>
+        <relativePath>../../parent</relativePath>
     </parent>
-    <artifactId>reference-aggregator</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>api</module>
-        <module>impl</module>
-    </modules>
+    <artifactId>reference-impl</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.github.vrpolak.q10sk</groupId>
+            <artifactId>reference-api</artifactId>
+            <version>0.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
     <!-- TODO: Add all the other stuff to eventually conform to Maven Central requirements. -->
 </project>
