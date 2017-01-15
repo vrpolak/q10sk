@@ -19,20 +19,18 @@
 package com.github.vrpolak.q10sk.reference.implementation.api;
 
 /**
- * Immutable object representing an inner node of q10sk state tree, where the function is S.
- *
- * <p>Each Q10skStateTreeInnerNode instance with S as a function should be of a class which implements this interface.
+ * Immutable object for creating Qx nodes from one argument.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeSxNode extends Q10skStateTreeInnerNode {
+public interface Q10skStateTreeQxNodeFactory extends Q10skStateTreeInnerNodeOneArgumentFactory<Q10skStateTreeQxNode> {
 
     /**
-     * Return a new node which applies (without evaluating) this as a function to the given argument.
+     * Create new Qx node using the argument. May be called multiple times.
      *
-     * @return result Sxy node, either newly constructed, or reference to existing one.
+     * @return created Qx node, each call reference different instance.
      */
     @Override
-    Q10skStateTreeSxyNode applyTo(final Q10skStateTreeGeneralNode argument);
+    Q10skStateTreeQxNode create(final Q10skStateTreeGeneralNode argumentX);
 
 }

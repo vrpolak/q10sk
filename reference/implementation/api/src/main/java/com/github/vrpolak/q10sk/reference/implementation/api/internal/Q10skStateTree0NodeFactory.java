@@ -19,20 +19,12 @@
 package com.github.vrpolak.q10sk.reference.implementation.api;
 
 /**
- * Immutable object representing an inner node of q10sk state tree, where the function is 0.
- *
- * <p>Each Q10skStateTreeInnerNode instance with 0 as a function should be of a class which implements this interface.
+ * Immutable object for creating 0 nodes of q10sk state tree.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTree0xNode extends Q10skStateTreeInnerNode {
+public interface Q10skStateTree0NodeFactory extends Q10skStateTreeLeafNodeFactory<Q10skStateTree0Node> {
 
-    /**
-     * Return a new node which applies (without evaluating) this as a function to the given argument.
-     *
-     * @return result 0xy node, either newly constructed, or reference to existing one.
-     */
-    @Override
-    Q10skStateTree0xyNode applyTo(final Q10skStateTreeGeneralNode argument);
+    // Nothing to be added.
 
 }

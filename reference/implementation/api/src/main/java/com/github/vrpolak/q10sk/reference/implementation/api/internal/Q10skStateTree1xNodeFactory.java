@@ -19,18 +19,18 @@
 package com.github.vrpolak.q10sk.reference.implementation.api;
 
 /**
- * Immutable object representing a leaf node Q of q10sk state tree.
+ * Immutable object for creating 1x nodes from one argument.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeQNode extends Q10skStateTreeLeafNode {
+public interface Q10skStateTree1xNodeFactory extends Q10skStateTreeInnerNodeOneArgumentFactory<Q10skStateTree1xNode> {
 
     /**
-     * Return a new node which applies (without evaluating) this as a function to the given argument.
+     * Create new 1x node using the argument. May be called multiple times.
      *
-     * @return result Qx node, either newly constructed, or reference to existing one.
+     * @return created 1x node, each call reference different instance.
      */
     @Override
-    Q10skStateTreeQxNode applyTo(final Q10skStateTreeGeneralNode argument);
+    Q10skStateTree1xNode create(final Q10skStateTreeGeneralNode argumentX);
 
 }
