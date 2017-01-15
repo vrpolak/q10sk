@@ -22,7 +22,7 @@ package com.github.vrpolak.q10sk.reference.api;
  * Object used for running q10sk programs.
  *
  * <p>The behavior corresponds to an immutable object
- * whose method mutates some of given arguments.
+ * whose method mutates some of the given arguments.
  * Implementations are free to contain mutable data themselves,
  * for example various caches.
  *
@@ -33,12 +33,13 @@ public interface Q10skRunner {
     /*
      * Run program defined by state, calling consumer and producer for output and input repsectively.
      *
-     * <p>If this returns, the program reached halted state.
+     * <p>If the program reached halted state, return the state.
      *
      * @param state  the initial state of the program, never changed
      * @param consumer  the consumer to be called when the program want to output, mutated on call
-     * @param producer  the producer to call when the program requires input, mutated on cal
+     * @param producer  the producer to call when the program requires input, mutated on call
+     * @return  the halted state
      */
-    void run(final Q10skStateTreeRootNode state, final BitConsumer consumer, final BitProducer producer);
+    Q10skStateTreeGeneralNode run(final Q10skStateTreeGeneralNode initialState, final BitConsumer consumer, final BitProducer producer);
 
 }
