@@ -19,12 +19,19 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a general node of q10sk state tree.
+ * Immutable object for creating wnpo Kx nodes from one argument.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeGeneralNode {
+public interface Q10skWnpoKxNodeFactory extends Q10skStateTreeNodeOneArgumentFactory<Q10skWnpoKxNode> {
 
-    // Just a marker interface, no specific methods.
+    /**
+     * Create new Kx node using the argument. May be called multiple times.
+     *
+     * @param argumentX the given argument to use.
+     * @return created Kx node, each call references different instance.
+     */
+    @Override
+    Q10skWnpoKxNode create(final Q10skWnpoNode argumentX);
 
 }

@@ -19,12 +19,14 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a general node of q10sk state tree.
+ * Immutable object representing a warkly normalized wnpo node of q10sk state tree.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeGeneralNode {
+public interface Q10skWnpoWnizedNode<APPLIED extends Q10skWnpoNode>
+        extends Q10skWnpoNode, CovariantFunction<APPLIED, Q10skWnpoNode, Q10skWnpoNode> {
 
     // Just a marker interface, no specific methods.
+    // Operation shall be selected based on an interface check.
 
 }

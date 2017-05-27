@@ -18,13 +18,25 @@
 
 package com.github.vrpolak.q10sk.reference.api;
 
+import java.util.function.Function;
+
 /**
- * Immutable object representing a general node of q10sk state tree.
+ * Immutable object representing a function of one argument.
+ *
+ * <p>Java generics are invariant, but this enables explicit covariance in the return type.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeGeneralNode {
+public interface CovariantFunction<TYPE extends SUPERTYPE, SUPERTYPE, ARGUMENT>
+        extends Function<ARGUMENT, SUPERTYPE> {
 
-    // Just a marker interface, no specific methods.
+    /**
+     * Return the result of application of this function to the given argument.
+     *
+     * @param argument given.
+     * @return result of application.
+     */
+    @Override
+    TYPE apply(final ARGUMENT argument);
 
 }

@@ -19,12 +19,21 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a general node of q10sk state tree.
+ * Immutable object for creating wnpo Qxyz nodes from three arguments.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeGeneralNode {
+public interface Q10skWnpoQxyzNodeFactory extends Q10skStateTreeNodeThreeArgumentFactory<Q10sWnpoQxyzNode> {
 
-    // Just a marker interface, no specific methods.
+    /**
+     * Create new Qxyz node using the arguments. May be called multiple times.
+     *
+     * @param argumentX the first argument to use.
+     * @param argumentY the second argument to use.
+     * @param argumentZ the third argument to use.
+     * @return created Qxyz node, each call references different instance.
+     */
+    @Override
+    Q10skWnpoQxyzNode create(final Q10skWnpoNode argumentX, final Q10skWnpoNode argumentY, final Q10skWnpoNode argumentZ);
 
 }
