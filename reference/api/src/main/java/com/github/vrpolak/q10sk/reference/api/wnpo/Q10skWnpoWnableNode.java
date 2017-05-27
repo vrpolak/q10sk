@@ -21,7 +21,7 @@ package com.github.vrpolak.q10sk.reference.api;
 /**
  * Immutable object representing a weakly normalizable wnpo node of q10sk state tree.
  *
- * <p>This is a generic, just to avoid overriding the method just just to specify the return type.
+ * <p>This is a generic, to avoid overriding the method just to specify the return type.
  *
  * @author Vratko Polak
  */

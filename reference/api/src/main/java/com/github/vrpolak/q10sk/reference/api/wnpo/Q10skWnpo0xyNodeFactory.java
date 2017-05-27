@@ -25,6 +25,6 @@ package com.github.vrpolak.q10sk.reference.api;
  */
 public interface Q10skWnpo0xyNodeFactory extends TwoArgumentFactory<Q10skWnpo0xyNode, Q10skWnpoNode> {
 
-    // Just a marker interface, no specific methods.
+    // Nothing to add to what parent interfaces imply.
 
 }

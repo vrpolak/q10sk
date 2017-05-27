@@ -19,20 +19,14 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a wnpo node of q10sk state tree, where the function is 1x.
+ * Immutable object representing a wnpo node of q10sk state tree, where the function is Qx.
  *
- * <p>Each Q10skWnpoWnableNode instance with 1x as a function should be of a class which implements this interface.
+ * <p>Each Q10skWnpoWnizedNode instance with Qx as a function should be of a class which implements this interface.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpo1xyNode extends Q10skWnpoWnableNode {
+public interface Q10skWnpoQxyNode extends Q10skWnpoWnizedNode<Q10skWnpoQxyzNode> {
 
-    /*
-     * Return reference to the node representing the result of 1 rule evaluation.
-     *
-     * @return result 1x node, either newly constructed, or a reference to existing one.
-     */
-    @Override
-    Q10skWnpo1xNode weaklyNormalize();
+    // Nothing to add to what parent interfaces imply.
 
 }

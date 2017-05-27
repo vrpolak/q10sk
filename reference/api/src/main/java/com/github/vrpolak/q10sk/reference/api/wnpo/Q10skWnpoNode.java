@@ -29,8 +29,8 @@ import java.util.function.Function;
  * Some weakly normalized nodes lead to known input/output operations,
  * others represent halted state.
  *
- * <p>All wnpo nodes can act as function nodes and root nodes both.
- * To ensure applied nodes remain within wnpo scheme, all arguments
+ * <p>All wnpo nodes can act both as function nodes and as root nodes.
+ * To ensure all applied nodes remain within wnpo scheme, all arguments
  * of methods of this and extended interfaces are required to be of Q10skWnpoNode type.
  *
  * <p>Currently, no rule is applied without explicit call for weak normalization.

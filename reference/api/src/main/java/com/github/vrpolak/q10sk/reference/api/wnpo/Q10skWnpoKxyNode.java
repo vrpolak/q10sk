@@ -19,20 +19,14 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object for creating wnpo Sxy nodes from two arguments.
+ * Immutable object representing a wnpo node of q10sk state tree, where the function is Kx.
+ *
+ * <p>Each Q10skWnpoWnableNode instance with Kx as a function should be of a class which implements this interface.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoSxyNodeFactory extends Q10skStateTreeNodeTwoArgumentFactory<Q10sWnpoSxyNode> {
+public interface Q10skWnpoKxyNode extends Q10skWnpoWnableNode<Q10skWnpoWnizedNode> {
 
-    /**
-     * Create new Sxy node using the arguments. May be called multiple times.
-     *
-     * @param argumentX the first argument to use.
-     * @param argumentY the second argument to use.
-     * @return created Sxy node, each call references different instance.
-     */
-    @Override
-    Q10skWnpoSxyNode create(final Q10skWnpoNode argumentX, final Q10skWnpoNode argumentY);
+    // Nothing to add to what parent interfaces imply.
 
 }

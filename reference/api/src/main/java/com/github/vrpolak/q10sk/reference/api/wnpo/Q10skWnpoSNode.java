@@ -19,19 +19,12 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a wnpo node 1 of q10sk state tree.
+ * Immutable object representing a wnpo node S of q10sk state tree.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpo1Node extends Q10skWnpoWnizedNode {
+public interface Q10skWnpoSNode extends Q10skWnpoWnizedNode<Q10skWnpoSxNode> {
 
-    /**
-     * Return a new node which applies (without evaluating) this as a function to the given argument.
-     *
-     * @param argumentX the given argument.
-     * @return result 1x node, either newly constructed, or reference to existing one.
-     */
-    @Override
-    Q10skWnpo1xNode applyTo(final Q10skWnpoNode argumentX);
+    // Nothing to add to what parent interfaces imply.
 
 }

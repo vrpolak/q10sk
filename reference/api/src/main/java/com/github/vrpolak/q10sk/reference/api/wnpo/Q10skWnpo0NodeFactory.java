@@ -25,6 +25,6 @@ package com.github.vrpolak.q10sk.reference.api;
  */
 public interface Q10skWnpo0NodeFactory extends ZeroArgumentFactory<Q10skWnpo0Node> {
 
-    // Just a marker interface, no specific methods.
+    // Nothing to add to what parent interfaces imply.
 
 }
