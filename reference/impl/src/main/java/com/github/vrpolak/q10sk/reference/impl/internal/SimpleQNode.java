@@ -18,36 +18,38 @@
 
 package com.github.vrpolak.q10sk.reference.impl;
 
-import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0Node;
-import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0NodeFactory;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpoNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpoQNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpoQxNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpoQxNodeFactory;
 
 /**
- * Immutable object for referencing a single 0 node of q10sk state tree.
+ * Immutable object as Q node of q10sk state tree.
  *
  * @author Vratko Polak
  */
-public class Referencing0NodeFactory implements Q10skWnpo0NodeFactory {
+public class SimpleQNode implements Q10skWnpoQNode {
 
     /**
-     * The remembered node.
+     * The remembered Qx node factory.
      */
-    private final Q10skWnpo0Node node;
+    private final Q10skWnpoQxNodeFactory factory;
 
     /**
-     * Constructor which remembers a node.
+     * Constructor which remembers a node factory.
      */
-    public Referencing0NodeFactory(final Q10skWnpo0Node node) {
-        this.node = node;
+    public SimpleQNode(final Q10skWnpoQxNodeFactory factory) {
+        this.factory = factory;
     }
 
     /**
-     * The remembered node. May be called multiple times.
+     * Return a new node which applies (without evaluating) this as a function to the given argument.
      *
-     * @return 0 node, each call references the same instance.
+     * @return result Qx node, created by the remembered factory.
      */
     @Override
-    public Q10skWnpo0Node create() {
-        return node;
+    public Q10skWnpoQxNode apply(final Q10skWnpoNode argumentX) {
+        return factory.create(argumentX);
     }
 
 }

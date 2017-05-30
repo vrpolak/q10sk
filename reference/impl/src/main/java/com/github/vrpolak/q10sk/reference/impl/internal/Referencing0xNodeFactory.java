@@ -18,15 +18,15 @@
 
 package com.github.vrpolak.q10sk.reference.impl;
 
-import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0Node;
-import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0NodeFactory;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0xNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0xNodeFactory;
 
 /**
- * Immutable object for referencing a single 0 node of q10sk state tree.
+ * Immutable object for referencing a single 0x node of q10sk state tree.
  *
  * @author Vratko Polak
  */
-public class Referencing0NodeFactory implements Q10skWnpo0NodeFactory {
+public class Referencing0xNodeFactory implements Q10skWnpo0xNodeFactory {
 
     /**
      * The remembered node.

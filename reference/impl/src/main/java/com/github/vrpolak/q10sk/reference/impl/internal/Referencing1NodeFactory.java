@@ -18,35 +18,35 @@
 
 package com.github.vrpolak.q10sk.reference.impl;
 
-import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0Node;
-import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0NodeFactory;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpo1Node;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpo1NodeFactory;
 
 /**
- * Immutable object for referencing a single 0 node of q10sk state tree.
+ * Immutable object for referencing a single 1 node of q10sk state tree.
  *
  * @author Vratko Polak
  */
-public class Referencing0NodeFactory implements Q10skWnpo0NodeFactory {
+public class Referencing1NodeFactory implements Q10skWnpo1NodeFactory {
 
     /**
      * The remembered node.
      */
-    private final Q10skWnpo0Node node;
+    private final Q10skWnpo1Node node;
 
     /**
      * Constructor which remembers a node.
      */
-    public Referencing0NodeFactory(final Q10skWnpo0Node node) {
+    public Referencing1NodeFactory(final Q10skWnpo1Node node) {
         this.node = node;
     }
 
     /**
      * The remembered node. May be called multiple times.
      *
-     * @return 0 node, each call references the same instance.
+     * @return 1 node, each call references the same instance.
      */
     @Override
-    public Q10skWnpo0Node create() {
+    public Q10skWnpo1Node create() {
         return node;
     }
 

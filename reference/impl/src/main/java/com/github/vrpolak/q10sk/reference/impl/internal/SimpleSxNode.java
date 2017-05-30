@@ -19,37 +19,44 @@
 package com.github.vrpolak.q10sk.reference.impl;
 
 import com.github.vrpolak.q10sk.reference.api.Q10skWnpoNode;
-import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0Node;
-import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0xNode;
-import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0xNodeFactory;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpoSxNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpoSxyNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpoSxyNodeFactory;
 
 /**
- * Immutable object as 0 node of q10sk state tree.
+ * Immutable object as Sx node of q10sk state tree.
  *
  * @author Vratko Polak
  */
-public class Simple0Node implements Q10skWnpo0Node {
+public class SimpleSxNode implements Q10skWnpoSxNode {
 
     /**
-     * The remembered 0x node factory.
+     * The x argument instance.
      */
-    private final Q10skWnpo0xNodeFactory factory;
+    private final Q10skWnpoNode argumentX;
 
     /**
-     * Constructor which remembers a node factory.
+     * The remembered Sxy node factory.
      */
-    public Simple0Node(final Q10skWnpo0xNodeFactory factory) {
+    private final Q10skWnpoSxyNodeFactory factory;
+
+    /**
+     * Constructor which remembers a node factory and the argument.
+     */
+    public SimpleSxNode(final Q10skWnpoSxyNodeFactory factory, final Q10skWnpoNode argumentX) {
         this.factory = factory;
+        this.argumentX = argumentX;
     }
 
     /**
      * Return a new node which applies (without evaluating) this as a function to the given argument.
      *
-     * @return result 0x node, created by the remembered factory.
+     * @return result Sxy node, created by the remembered factory.
      */
     @Override
-    public Q10skWnpo0xNode apply(final Q10skWnpoNode argumentX) {
-        return factory.create(argumentX);
+    public Q10skWnpoSxyNode apply(final Q10skWnpoNode argumentY) {
+        return factory.create(argumentX, argumentY);
     }
 
 }
+-
