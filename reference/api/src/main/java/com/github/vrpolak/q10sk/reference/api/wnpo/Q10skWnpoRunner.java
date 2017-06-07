@@ -19,12 +19,15 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a general node of q10sk state tree.
+ * Object used for running q10sk programs given as wnpo nodes.
+ *
+ * <p>The behavior of the implementation should repeatedly call weak normalization
+ * and perform the known operation, until a known type of halt (or indefinitely).
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeGeneralNode {
+public interface Q10skWnpoRunner extends Q10skRunner<Q10skWnpoNode> {
 
-    // Just a marker interface, no specific methods.
+    // Nothing to add to what parent interfaces imply.
 
 }

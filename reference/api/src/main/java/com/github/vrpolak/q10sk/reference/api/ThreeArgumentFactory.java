@@ -19,12 +19,20 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a general node of q10sk state tree.
+ * Immutable object for creating instances of target type using three arguments.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeGeneralNode {
+public interface ThreeArgumentFactory<TARGET, ARGUMENT> {
 
-    // Just a marker interface, no specific methods.
+    /**
+     * Create the instance using the arguments. May be called multiple times.
+     *
+     * @param argumentX the first argument to use.
+     * @param argumentY the second argument to use.
+     * @param argumentZ the third argument to use.
+     * @return created instance, either new or existing.
+     */
+    TARGET create(final ARGUMENT argumentX, final ARGUMENT argumentY, final ARGUMENT argumentZ);
 
 }

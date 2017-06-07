@@ -19,12 +19,18 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a general node of q10sk state tree.
+ * Immutable object for creating instances of the target type using one argument.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeGeneralNode {
+public interface OneArgumentFactory<TARGET, ARGUMENT> {
 
-    // Just a marker interface, no specific methods.
+    /**
+     * Create the instance using the argument. May be called multiple times.
+     *
+     * @param argumentX the argument to use.
+     * @return created instance, either new or existing.
+     */
+    TARGET create(final ARGUMENT argumentX);
 
 }

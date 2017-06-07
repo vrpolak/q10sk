@@ -16,15 +16,34 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.api;
+package com.github.vrpolak.q10sk.reference.impl;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * Immutable object representing a general node of q10sk state tree.
+ * Test the two instances return correct isZero().
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeGeneralNode {
+public class SimpleBitTest {
 
-    // Just a marker interface, no specific methods.
+    /**
+     * Zero bit should return false.
+     */
+    @Test
+    public void zeroTest() {
+        final SimpleBit zero = SimpleBit.ZERO;
+        Assert.assertFalse(zero.isOne());
+    }
+
+    /**
+     * One bit should return true.
+     */
+    @Test
+    public void oneTest() {
+        final SimpleBit one = SimpleBit.ONE;
+        Assert.assertTrue(one.isOne());
+    }
 
 }

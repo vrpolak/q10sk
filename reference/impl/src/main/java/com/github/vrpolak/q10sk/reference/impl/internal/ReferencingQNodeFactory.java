@@ -16,15 +16,38 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.api;
+package com.github.vrpolak.q10sk.reference.impl;
+
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpoQNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpoQNodeFactory;
 
 /**
- * Immutable object representing a general node of q10sk state tree.
+ * Immutable object for referencing a single Q node of q10sk state tree.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeGeneralNode {
+public class ReferencingQNodeFactory implements Q10skWnpoQNodeFactory {
 
-    // Just a marker interface, no specific methods.
+    /**
+     * The remembered node.
+     */
+    private final Q10skWnpoQNode node;
+
+    /**
+     * Constructor which remembers a node.
+     */
+    public ReferencingQNodeFactory(final Q10skWnpoQNode node) {
+        this.node = node;
+    }
+
+    /**
+     * The remembered node. May be called multiple times.
+     *
+     * @return Q node, each call references the same instance.
+     */
+    @Override
+    public Q10skWnpoQNode create() {
+        return node;
+    }
 
 }

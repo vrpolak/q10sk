@@ -19,12 +19,19 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a general node of q10sk state tree.
+ * Immutable object representing a weakly normalizable wnpo node of q10sk state tree.
+ *
+ * <p>This is a generic, to avoid overriding the method just to specify the return type.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeGeneralNode {
+public interface Q10skWnpoWnableNode<NORMALIZED extends Q10skWnpoWnizedNode> extends Q10skWnpoNode {
 
-    // Just a marker interface, no specific methods.
+    /**
+     * Return a weakly normalized node equivalent to this. May never return.
+     *
+     * @return node, perhaps newly constructed, perhaps reference to existing one.
+     */
+    NORMALIZED weaklyNormalize();
 
 }

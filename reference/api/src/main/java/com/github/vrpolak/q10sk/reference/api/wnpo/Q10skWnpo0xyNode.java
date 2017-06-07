@@ -19,12 +19,14 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a general node of q10sk state tree.
+ * Immutable object representing a wnpo node of q10sk state tree, where the function is 0x.
+ *
+ * <p>Each Q10skWnpoWnableNode instance with 0x as a function should be of a class which implements this interface.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeGeneralNode {
+public interface Q10skWnpo0xyNode extends Q10skWnpoWnableNode<Q10skWnpo0xNode> {
 
-    // Just a marker interface, no specific methods.
+    // Nothing to add to what parent interfaces imply.
 
 }

@@ -28,18 +28,22 @@ package com.github.vrpolak.q10sk.reference.api;
  *
  * @author Vratko Polak
  */
-public interface Q10skRunner {
+public interface Q10skRunner<NODE extends Q10skStateTreeRootNode> {
 
     /*
-     * Run program defined by state, calling consumer and producer for output and input repsectively.
+     * Run a program, calling consumer and producer for output and input repsectively, starting from initial state.
      *
-     * <p>If the program reached halted state, return the state.
+     * <p>If the program reaches a halted state, return the final state, otherwise keep executing indefinitely.
      *
-     * @param state  the initial state of the program, never changed
+     * <p>This is a generic, as Q10skStateTreeRootNode itself does not expose any methods
+     * which would enable program execution. It is assumed NODE type exposes such methods,
+     * and runners using them would be of an interface extending this and documenting the execution method.
+     *
      * @param consumer  the consumer to be called when the program want to output, mutated on call
      * @param producer  the producer to call when the program requires input, mutated on call
+     * @param initialState  the initial state of the program, never changed
      * @return  the halted state
      */
-    Q10skStateTreeGeneralNode run(final Q10skStateTreeGeneralNode initialState, final BitConsumer consumer, final BitProducer producer);
+    NODE run(final BitConsumer consumer, final BitProducer producer, final NODE initialState);
 
 }
