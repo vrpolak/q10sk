@@ -26,6 +26,7 @@ package com.github.vrpolak.q10sk.reference.api;
  * @author Vratko Polak
  */
 public interface Q10skWnpoQxyzNode extends Q10skWnpoWnableNode<Q10skWnpoQxyNode> {
+    // FIXME: This is in fact a Q10skWnpoOpableNode.
 
     // Nothing to add to what parent interfaces imply.
 

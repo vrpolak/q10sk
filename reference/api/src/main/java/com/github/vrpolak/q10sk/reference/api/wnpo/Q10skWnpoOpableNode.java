@@ -19,15 +19,22 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a wnpo node of q10sk state tree, where the function is 1x.
- *
- * <p>Each Q10skWnpoWnableNode instance with 1x as a function should be of a class which implements this interface.
+ * Immutable object representing a wnpo node of q10sk state tree able to perform a root operation.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpo1xyNode extends Q10skWnpoWnableNode<Q10skWnpo1xNode> {
-    // FIXME: This is in fact a Q10skWnpoOpableNode.
+public interface Q10skWnpoOpableNode<OPERATED extends Q10skWnpoNode, APPLIED extends Q10skWnpoNode>
+        extends Q10skWnpoWnizedNode<APPLIED> {
 
-    // Nothing to add to what parent interfaces imply.
+    /**
+     * Return a root node equivalent to the state tree after performing an operation.
+     *
+     * <p>Returns always and quickly.
+     * No side-effect is performed, the runner is expected to perform that,
+     * based on an sub-interface check and of course only if this is the current root node.
+     *
+     * @return node, perhaps newly constructed, perhaps reference to existing one.
+     */
+    OPERATED operate();
 
 }
