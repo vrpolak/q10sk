@@ -27,7 +27,7 @@ package com.github.vrpolak.q10sk.reference.api;
  */
 public interface Q10skWnpoKxNode extends Q10skWnpoWnizedNode<Q10skWnpoKxyNode> {
 
-    // TODO: Return the evaluated x node directly?
+    // TODO: Wnormalize to evaluated x node directly?
     // Nothing to add to what parent interfaces imply.
 
 }

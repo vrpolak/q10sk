@@ -19,22 +19,20 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a wnpo node of q10sk state tree able to perform a root operation.
+ * Immutable object representing a wnpo node of q10sk state tree able to perform output operation.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoOpableNode<OPERATED extends Q10skWnpoNode, APPLIED extends Q10skWnpoNode>
+public interface Q10skWnpoOutputNode<APPLIED extends Q10skWnpoNode>
         extends Q10skWnpoWnizedNode<APPLIED> {
 
     /**
-     * Return a root node equivalent to the state tree after performing an operation.
+     * Return a root node equivalent to the state tree after performing output operation.
      *
-     * <p>Returns always and quickly.
-     * No side-effect is performed, the runner is expected to perform that,
-     * based on an sub-interface check and of course only if this is the current root node.
+     * <p>Returns always and quickly, unless consumer interferes.
      *
      * @return node, perhaps newly constructed, perhaps reference to existing one.
      */
-    OPERATED operate();
+    Q10skWnpoNode output(final BitConsumer consumer);
 
 }

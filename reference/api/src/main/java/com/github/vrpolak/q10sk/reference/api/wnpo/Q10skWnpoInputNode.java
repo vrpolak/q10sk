@@ -19,14 +19,20 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a wnpo node of q10sk state tree, where the function is Qxy.
- *
- * <p>Each Q10skWnpoWnableNode instance with Qxy as a function should be of a class which implements this interface.
+ * Immutable object representing a wnpo node of q10sk state tree able to perform input operation.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoQxyzNode extends Q10skWnpoWnableNode<Q10skWnpoQxyNode> {
+public interface Q10skWnpoInputNode<APPLIED extends Q10skWnpoNode>
+        extends Q10skWnpoWnizedNode<APPLIED> {
 
-    // Nothing to add to what parent interfaces imply.
+    /**
+     * Return a root node equivalent to the state tree after performing input operation.
+     *
+     * <p>Returns always and quickly, unless producer interferes.
+     *
+     * @return node, perhaps newly constructed, perhaps reference to existing one.
+     */
+    Q10skWnpoNode input(final BitProducer producer);
 
 }
