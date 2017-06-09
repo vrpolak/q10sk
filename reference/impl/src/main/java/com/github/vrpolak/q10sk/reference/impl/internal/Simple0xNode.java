@@ -18,10 +18,11 @@
 
 package com.github.vrpolak.q10sk.reference.impl;
 
-import com.github.vrpolak.q10sk.reference.api.Q10skWnpoNode;
+import com.github.vrpolak.q10sk.reference.api.BitConsumer;
 import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0xNode;
 import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0xyNode;
 import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0xyNodeFactory;
+import com.github.vrpolak.q10sk.reference.api.Q10skWnpoNode;
 
 /**
  * Immutable object as 0x node of q10sk state tree.
@@ -56,6 +57,16 @@ public class Simple0xNode implements Q10skWnpo0xNode {
     @Override
     public Q10skWnpo0xyNode apply(final Q10skWnpoNode argumentY) {
         return factory.create(argumentX, argumentY);
+    }
+
+   /**
+    * Push zero to consumer, return node argumentX.
+    *
+    * @return argumentX node.
+    */
+    public Q10skWnpoNode output(final BitConsumer consumer) {
+        consumer.consumeBit(SimpleBit.ZERO);
+        return argumentX;
     }
 
 }

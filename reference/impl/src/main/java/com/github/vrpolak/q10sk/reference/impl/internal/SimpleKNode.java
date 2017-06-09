@@ -38,7 +38,7 @@ public class SimpleKNode implements Q10skWnpoKNode {
     /**
      * Constructor which remembers a node factory.
      */
-    public Simple1Node(final Q10skWnpoKxNodeFactory factory) {
+    public SimpleKNode(final Q10skWnpoKxNodeFactory factory) {
         this.factory = factory;
     }
 
