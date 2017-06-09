@@ -25,9 +25,9 @@ package com.github.vrpolak.q10sk.reference.api;
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpo0xNode extends Q10skWnpoWnizedNode<Q10skWnpo0xyNode> {
+public interface Q10skWnpo0xNode extends Q10skWnpoOutputNode<Q10skWnpo0xyNode> {
 
-    // TODO: Return the evaluated 0(xy) node directly?
+    // TODO: Wnormalize to evaluated 0(xy) node directly?
     // Nothing to add to what parent interfaces imply.
 
 }
