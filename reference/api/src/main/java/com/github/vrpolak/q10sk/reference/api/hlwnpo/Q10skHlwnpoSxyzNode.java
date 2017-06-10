@@ -25,7 +25,7 @@ package com.github.vrpolak.q10sk.reference.api;
  *
  * @author Vratko Polak
  */
-public interface Q10skHlwnpoSxyzNode extends Q10skWnpoWnableNode {
+public interface Q10skHlwnpoSxyzNode extends Q10skHlwnpoWnableNode {
 
     // Nothing to add to what parent interfaces imply.
 

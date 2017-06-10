@@ -19,15 +19,12 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a wnpo node of q10sk state tree, where the function is K.
- *
- * <p>Each Q10skWnpoWnizedNode instance with K as a function should be of a class which implements this interface.
+ * Immutable object representing a hlwnpo node K of q10sk state tree.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoKxNode extends Q10skWnpoWnizedNode<Q10skWnpoKxyNode> {
+public interface Q10skHlwnpoKNode extends Q10skHlwnpoKnownizedNode<Q10skHlwnpoKxNode> {
 
-    // TODO: Wnormalize to evaluated x node directly?
     // Nothing to add to what parent interfaces imply.
 
 }
