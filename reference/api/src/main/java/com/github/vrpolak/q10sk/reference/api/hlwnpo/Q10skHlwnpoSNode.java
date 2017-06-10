@@ -19,14 +19,11 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Object used for running q10sk programs given as wnpo nodes.
- *
- * <p>The behavior of the implementation should repeatedly call weak normalization
- * and perform the known operation, until a known type of halt (or indefinitely).
+ * Immutable object representing a hlwnpo node S of q10sk state tree.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoRunner extends Q10skRunner<Q10skWnpoNode> {
+public interface Q10skHlwnpoSNode extends Q10skHlwnpoKnownizedNode<Q10skHlwnpoSxNode> {
 
     // Nothing to add to what parent interfaces imply.
 
