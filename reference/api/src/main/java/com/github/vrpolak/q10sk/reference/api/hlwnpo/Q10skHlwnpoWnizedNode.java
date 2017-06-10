@@ -19,14 +19,17 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a root node of q10sk state tree.
+ * Immutable object representing a weakly normalized hlwnpo node of q10sk state tree.
  *
- * <p>The root nodes may contain state related to the whole tree (as opposed to just this node).
+ * <p>In practice, being weakly normalized implies this node
+ * is not weakly normalizable anymore. But do not depend on that,
+ * some classes make find it easier to implement idempotent wnormalization call.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeRootNode extends Q10skStateTreeGeneralNode {
+public interface Q10skHlwnpoWnizedNode extends Q10skHlwnpoNode {
 
-    // Just a marker interface, no specific methods.
+    // Just a marker interface.
+    // Operation shall be selected based on an interface check.
 
 }

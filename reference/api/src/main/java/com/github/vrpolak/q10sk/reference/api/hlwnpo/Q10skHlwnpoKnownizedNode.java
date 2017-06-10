@@ -19,20 +19,13 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a wnpo node of q10sk state tree able to perform output operation.
+ * Immutable object representing a weakly normalized hlwnpo node with known applied type.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoOutputNode<APPLIED extends Q10skWnpoNode>
-        extends Q10skWnpoWnizedNode<APPLIED> {
+public interface Q10skHlwnpoKnownizedNode<APPLIED extends Q10skHlwnpoNode>
+        extends Q10skHlwnpoWnizedNode, CovariantFunction<APPLIED, Q10skHlwnpoNode, Q10skHlwnpoNode> {
 
-    /**
-     * Return a root node equivalent to the state tree after performing output operation.
-     *
-     * <p>Returns always and quickly, unless consumer interferes.
-     *
-     * @return node, perhaps newly constructed, perhaps reference to existing one.
-     */
-    Q10skWnpoNode output(final BitConsumer consumer);
+    // Nothing to add to what parent interfaces imply.
 
 }

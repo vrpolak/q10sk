@@ -19,19 +19,20 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a weakly normalizable wnpo node of q10sk state tree.
- *
- * <p>This is a generic, to avoid overriding the method just to specify the return type.
+ * Immutable object representing a hlwnpo node of q10sk state tree able to perform output operation.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoWnableNode<NORMALIZED extends Q10skWnpoWnizedNode> extends Q10skWnpoNode {
+public interface Q10skHlwnpoOutputNode<APPLIED extends Q10skHlwnpoKnownizedNode<APPLIED>>
+        extends Q10skHlwnpoKnownizedNode<APPLIED> {
 
     /**
-     * Return a weakly normalized node equivalent to this. May never return.
+     * Return a root node equivalent to the state tree after performing output operation.
+     *
+     * <p>Returns always and quickly, unless consumer interferes.
      *
      * @return node, perhaps newly constructed, perhaps reference to existing one.
      */
-    NORMALIZED weaklyNormalize();
+    Q10skHlwnpoNode output(final BitConsumer consumer);
 
 }

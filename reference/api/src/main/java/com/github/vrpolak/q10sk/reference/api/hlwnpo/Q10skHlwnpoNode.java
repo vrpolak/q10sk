@@ -21,24 +21,26 @@ package com.github.vrpolak.q10sk.reference.api;
 import java.util.function.Function;
 
 /**
- * Immutable object representing a wnpo node of q10sk state tree.
+ * Immutable object representing a hlwnpo node of q10sk state tree.
  *
- * <p>Wnpo stands for Weakly Normalize and Perform Operation.
- * Wnpo is an execution scheme which allows a Q10skRunner to be implemented.
- * Each wnpo node is either weakly normalizable, or known to be already weakly normalized.
- * Some weakly normalized nodes lead to known input/output operations,
+ * <p>Hlwnpo is an execution scheme which allows a Q10skRunner to be implemented.
+ * Hlwnpo stands for Half Lazily Weakly Normalize and Perform Operation.
+ *
+ * <p>All hlwnpo nodes can act both as function nodes and as root nodes.
+ * To ensure all applied nodes remain within hlwnpo scheme, all arguments
+ * of methods of this and extended interfaces are required to be
+ * (subtypes) of Q10skHlwnpoNode type.
+ *
+ * <p>Each hlwnpo node is either weakly normalizable, or known to be already weakly normalized.
+ * Some weakly normalized nodes allow input/output operations (only in root position),
  * others represent halted state.
  *
- * <p>All wnpo nodes can act both as function nodes and as root nodes.
- * To ensure all applied nodes remain within wnpo scheme, all arguments
- * of methods of this and extended interfaces are required to be of Q10skWnpoNode type.
- *
- * <p>Currently, no rule is applied without explicit call for weak normalization.
- * TODO: Should K, 0 and 1 rules be applied unconditionally as soon as possible?
+ * <p>Half lazily implies S is the only rule not applied as soon as possible,
+ * only when required by weak normalization.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoNode extends Q10skStateTreeRootNode, Function<Q10skWnpoNode, Q10skWnpoNode> {
+public interface Q10skHlwnpoNode extends Q10skStateTreeRootNode, Function<Q10skHlwnpoNode, Q10skHlwnpoNode> {
 
     // Just a marker interface, no specific methods.
     // Weak normalizability shall be tested as an interface check.
