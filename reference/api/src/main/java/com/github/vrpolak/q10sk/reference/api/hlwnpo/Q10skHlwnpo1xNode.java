@@ -19,11 +19,15 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object for creating wnpo Qxyz nodes from three arguments.
+ * Immutable object representing a hlwnpo node of q10sk state tree, where the function is 1.
+ *
+ * <p>Each Q10skHlwnpoNode instance with 1 as a function should be of a class which implements this interface.
+ *
+ * <p>Apply operation should return the rule result 1(xy).
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoQxyzNodeFactory extends ThreeArgumentFactory<Q10skWnpoQxyzNode, Q10skWnpoNode> {
+public interface Q10skHlwnpo1xNode extends Q10skHlwnpoOutputNode<Q10skHlwnpo1xNode> {
 
     // Nothing to add to what parent interfaces imply.
 
