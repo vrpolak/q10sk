@@ -16,40 +16,40 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.impl.apply;  // to only allow apply factory acces to the constructor
+package com.github.vrpolak.q10sk.reference.impl.sxyz;  // to only allow sxyz factory acces to the constructor
 
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoApplyNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoSxyzNode;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoApplyNodeFactory;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWnableNode;
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWnizedNode;
 
 /**
- * Immutable object representing a weakly normalizable hlwnpo node other than Sxyz.
+ * Immutable object representing a Sxyz hlwnpo node.
  *
  * @author Vratko Polak
  */
-class SimpleApplyNode implements Q10skHlwnpoApplyNode {
+class SimpleSxyzNode implements Q10skHlwnpoSxyzNode {
 
-    private final Q10skHlwnpoWnableNode function;
     private final Q10skHlwnpoNode argumentX;
+    private final Q10skHlwnpoNode argumentY;
+    private final Q10skHlwnpoNode argumentZ;
     private final Q10skHlwnpoApplyNodeFactory simpleApplyFactory;
 
-    SimpleApplyNode(final Q10skHlwnpoWnableNode argumentF, final Q10skHlwnpoNode argumentX, final Q10skHlwnpoApplyNodeFactory simpleApplyFactory) {
-        this.function = argumentF;
+    SimpleSxyzNode(final Q10skHlwnpoNode argumentX, final Q10skHlwnpoNode argumentY, final Q10skHlwnpoNode argumentZ, final Q10skHlwnpoApplyNodeFactory simpleApplyFactory) {
         this.argumentX = argumentX;
+        this.argumentY = argumentY;
+        this.argumentY = argumentZ;
         this.simpleApplyFactory = simpleApplyFactory;
     }
 
     @Override
-    public SimpleApplyNode apply(final Q10skHlwnpoNode argumentY) {
-        return this.simpleApplyFactory.create(this, argumentY);
+    public SimpleApplyNode apply(final Q10skHlwnpoNode argumentW) {
+        return this.simpleApplyFactory.create(this, argumentW);
     }
 
     @Override
-    public Q10skHlwnpoWnizedNode weaklyNormalize() {
-        // As this.function is NOT weakly normalized, the following is guaranteed to make progress.
-        return this.function.weaklyNormalize().apply(this.argumentX).weaklyNormalize();
+    public SimpleSxyzNode weaklyNormalize() {
+        // half eager would use this.argumentZ.weaklyNormalize() value instead of this.argumentZ value.
+        return this.argumentX.apply(this.argumentZ).apply(this.argumentY.apply(this.argumentZ)).weaklyNormalize();
     }
 
 }
