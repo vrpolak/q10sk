@@ -19,14 +19,12 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a root node of q10sk state tree.
- *
- * <p>The root nodes may contain state related to the whole tree (as opposed to just this node).
+ * Immutable object representing a hlwnpo node Q of q10sk state tree.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeRootNode extends Q10skStateTreeGeneralNode {
+public interface Q10skHlwnpoQNode extends Q10skHlwnpoKnownizedNode<Q10skHlwnpoQxNode> {
 
-    // Just a marker interface, no specific methods.
+    // Nothing to add to what parent interfaces imply.
 
 }

@@ -19,14 +19,16 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a root node of q10sk state tree.
+ * Object used for running q10sk programs given as hlwnpo nodes.
  *
- * <p>The root nodes may contain state related to the whole tree (as opposed to just this node).
+ * <p>The behavior of the implementation should repeatedly call
+ * weak normalization on the root node and perform the known operation,
+ * until a known type of halt (or indefinitely).
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeRootNode extends Q10skStateTreeGeneralNode {
+public interface Q10skHlwnpoRunner extends Q10skRunner<Q10skHlwnpoNode> {
 
-    // Just a marker interface, no specific methods.
+    // Nothing to add to what parent interfaces imply.
 
 }

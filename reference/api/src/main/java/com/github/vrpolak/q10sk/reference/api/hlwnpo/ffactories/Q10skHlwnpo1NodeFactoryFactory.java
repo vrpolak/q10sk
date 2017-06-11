@@ -19,14 +19,15 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a root node of q10sk state tree.
+ * Immutable object for creating hlwnpo 1 node factories from 1x node factories.
  *
- * <p>The root nodes may contain state related to the whole tree (as opposed to just this node).
+ * <p>As 1 apply method creates 1x nodes, it needs access to a 1x node factory.
+ * This is the way to create a 1 factory which has such an access.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeRootNode extends Q10skStateTreeGeneralNode {
+public interface Q10skHlwnpo1NodeFactoryFactory extends OneArgumentFactory<Q10skHlwnpo1NodeFactory, Q10skHlwnpo1xNodeFactory> {
 
-    // Just a marker interface, no specific methods.
+    // Nothing to add to what parent interfaces imply.
 
 }

@@ -16,17 +16,23 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.api;
+package com.github.vrpolak.q10sk.reference.impl.apply;
+
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoApplyNodeFactory;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWnableNode;
 
 /**
- * Immutable object representing a root node of q10sk state tree.
- *
- * <p>The root nodes may contain state related to the whole tree (as opposed to just this node).
+ * Immutable object for creating apply nodes restricted to SimpleApplyNode implementation.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeRootNode extends Q10skStateTreeGeneralNode {
+public class SimpleApplyNodeFactory implements Q10skHlwnpoApplyNodeFactory {
 
-    // Just a marker interface, no specific methods.
+    @Override
+    public SimpleApplyNode create(final Q10skHlwnpoWnableNode function, final Q10skHlwnpoNode argument) {
+        return new SimpleApplyNode(function, argument, this);
+//        return SimpleApplyNode(function, argument, (Q10skHlwnpoApplyNodeFactory) this);
+    }
 
 }

@@ -19,14 +19,19 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a root node of q10sk state tree.
- *
- * <p>The root nodes may contain state related to the whole tree (as opposed to just this node).
+ * Immutable object for creating instances of given type using two arguments of differing types.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeRootNode extends Q10skStateTreeGeneralNode {
+public interface TwoHeteroArgumentFactory<TARGET, ARGUMENT_F, ARGUMENT_X> {
 
-    // Just a marker interface, no specific methods.
+    /**
+     * Create the instance using the arguments. May be called multiple times.
+     *
+     * @param argumentF the first argument to use.
+     * @param argumentX the second argument to use.
+     * @return created instance, either new or existing.
+     */
+    TARGET create(final ARGUMENT_F argumentF, final ARGUMENT_X argumentX);
 
 }

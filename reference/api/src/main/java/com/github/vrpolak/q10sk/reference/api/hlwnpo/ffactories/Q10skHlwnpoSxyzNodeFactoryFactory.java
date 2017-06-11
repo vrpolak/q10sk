@@ -19,14 +19,15 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a root node of q10sk state tree.
+ * Immutable object for creating hlwnpo Sxyz node factories from apply node factories.
  *
- * <p>The root nodes may contain state related to the whole tree (as opposed to just this node).
+ * <p>As Sxyz apply method creates apply nodes, it needs access to an apply node factory.
+ * This is the way to create a Sxyz factory which has such an access.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeRootNode extends Q10skStateTreeGeneralNode {
+public interface Q10skHlwnpoSxyzNodeFactoryFactory extends OneArgumentFactory<Q10skHlwnpoSxyzNodeFactory, Q10skHlwnpoApplyNodeFactory> {
 
-    // Just a marker interface, no specific methods.
+    // Nothing to add to what parent interfaces imply.
 
 }

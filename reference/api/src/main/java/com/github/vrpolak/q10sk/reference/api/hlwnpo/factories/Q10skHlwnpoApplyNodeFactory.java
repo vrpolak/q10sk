@@ -19,14 +19,17 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a root node of q10sk state tree.
+ * Immutable object for creating hlwnpo apply nodes from function and argument nodes.
  *
- * <p>The root nodes may contain state related to the whole tree (as opposed to just this node).
+ * <p>This is for creating inner nodes far from leafs.
+ * The first argument should be apply node or Sxyz node,
+ * as each othe other function have a rule to be applied
+ * as soon as possible in half lazy evaluation.
  *
  * @author Vratko Polak
  */
-public interface Q10skStateTreeRootNode extends Q10skStateTreeGeneralNode {
+public interface Q10skHlwnpoApplyNodeFactory extends TwoHeteroArgumentFactory<Q10skHlwnpoApplyNode, Q10skHlwnpoWnableNode, Q10skHlwnpoNode> {
 
-    // Just a marker interface, no specific methods.
+    // Nothing to add to what parent interfaces imply.
 
 }

@@ -3,8 +3,8 @@
 This is an informal specification of q10sk.
 
 Q10sk is primarily a model of computation;
-but the intention is to create family of programming languages
-which semantics directly tied to that model of computation.
+but the intention is to create a family of programming languages
+with semantics directly tied to that model of computation.
 Of course, when a program written in such a language is interpreted,
 the interpreter is free to choose its model of computation
 (presumably to achive better preformance)
@@ -50,7 +50,10 @@ In purely functional languages, order of evaluation does not mater,
 but most implementations are assumed to be lazy,
 which means only the function (not the argument) is brought to normal form
 before function application is executed.
-A common exception to lazyness rule is to reduce K expressions even for argument,
+This applied recursively from the root node implies that
+lazy evaluation is only based on achieving weakly normalized form.
+
+A common exception to lazyness rule is to apply K rule as soon as possible,
 as that is guaranteed to save space.
 
 Aside of K, S and function application, q10sk contains 0, 1 and Q,
@@ -64,7 +67,19 @@ Reduction rules:
 
 <code>Qxyz = Q(xz)(yz)</code>
 
-The special meaning applies to the whole tree (as opposed to subree) causing the following side-effects:
+Similarly to K, these rules can be applied as soon as possible,
+without worrying about execution getting stuck.
+The result of Q rule is not simpler as a tree,
+but it moves Q closer to the root.
+
+Eager application of every rule except the S rule is called
+half lazy evaluation in this document.
+It will be used in the reference interpreter,
+but of course other interpreters may chose other evaluations,
+as long as they do not get stuck on programs which are halting in lazy evaluation.
+
+The special meaning of 0, 1 and Q applies to the whole tree
+(as opposed to subree) causing the following side-effects:
 If the tree has form "0x", bit zero is written to output and execution continues with tree "x".
 If the tree has form "1x", bit one is written to output and execution continues with tree "x".
 If the tree has form "Qxy", a bit is read from input,
@@ -75,7 +90,7 @@ Reduction rules imply the IO can happen as early as 0, 1 or Q become the leftmos
 (the top-most function), the only requirement is that 0, 1 and Q
 never apply their side-effects when present in an argument (when not the top-most function).
 
-When the tree reaches its normal form, execution is halted.
+When the tree reaches its weakly normal form, execution is halted.
 The system cannot distingush the halted state from a running state which happeded
 to require no IO for a period of time (unless the system can get such info from the interpreter).
 
@@ -90,3 +105,12 @@ That is it. Here are the reduction rules in unlambda syntax:
 <code>\`\`1xy = \`1\`xy</code>
 
 <code>\`\`\`Qxyz = \`\`Q\`xz\`yz</code>
+
+An interesting alternative to half lazy evaluation is half eager evaluation.
+There, z argument is weakly normalized before applying S rule.
+This gets stuck if z argument does not have a weakly normalized form,
+but reasonable programs should be able to avoid such z arguments
+in S expressions never executing the z argument.
+So half eager evaluation would run faster on the reasonable programs,
+but it would not be suited for randomly generated programs,
+or programs iterating over all source codes (such as resource limited Solomonoff induction).
