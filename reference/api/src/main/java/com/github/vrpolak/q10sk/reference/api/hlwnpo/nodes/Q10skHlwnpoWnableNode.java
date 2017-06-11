@@ -25,14 +25,6 @@ package com.github.vrpolak.q10sk.reference.api;
  */
 public interface Q10skHlwnpoWnableNode extends Q10skHlwnpoNode {
 
-    /**
-     * Return a weakly normalized node equivalent to this. May never return.
-     *
-     * <p>With half lazy evaluation, weakly normalizable nodes have S as leftmost leaf,
-     * so it is not feasible to restrict the wnormalization result type.
-     *
-     * @return node, perhaps newly constructed, perhaps reference to existing one.
-     */
-    Q10skHlwnpoWnizedNode weaklyNormalize();
+    // This is just a marker, signifying weaklyNormalize call makes progress.
 
 }

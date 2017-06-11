@@ -42,7 +42,18 @@ import java.util.function.Function;
  */
 public interface Q10skHlwnpoNode extends Q10skStateTreeRootNode, Function<Q10skHlwnpoNode, Q10skHlwnpoNode> {
 
-    // Just a marker interface, no specific methods.
-    // Weak normalizability shall be tested as an interface check.
+    /**
+     * Return a weakly normalized node equivalent to this. May never return.
+     *
+     * <p>Nodes which are already weakly normalized should return themselves.
+     * Even though only some nodes are caled weakly normalizable (meaning they do not return themselves),
+     * it is easier to allow this call on all nodes.
+     *
+     * <p>With half lazy evaluation, weakly normalizable nodes have S as leftmost leaf,
+     * so it is not feasible to restrict the wnormalization result type.
+     *
+     * @return node, perhaps newly constructed, perhaps reference to existing one.
+     */
+    Q10skHlwnpoWnizedNode weaklyNormalize();
 
 }

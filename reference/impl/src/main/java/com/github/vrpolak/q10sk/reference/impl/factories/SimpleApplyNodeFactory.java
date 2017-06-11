@@ -16,38 +16,23 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.impl;
+package com.github.vrpolak.q10sk.reference.impl.apply;
 
-import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0Node;
-import com.github.vrpolak.q10sk.reference.api.Q10skWnpo0NodeFactory;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoApplyNodeFactory;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWnableNode;
 
 /**
- * Immutable object for referencing a single 0 node of q10sk state tree.
+ * Immutable object for creating apply nodes restricted to SimpleApplyNode implementation.
  *
  * @author Vratko Polak
  */
-public class Referencing0NodeFactory implements Q10skWnpo0NodeFactory {
+public class SimpleApplyNodeFactory implements Q10skHlwnpoApplyNodeFactory {
 
-    /**
-     * The remembered node.
-     */
-    private final Q10skWnpo0Node node;
-
-    /**
-     * Constructor which remembers a node.
-     */
-    public Referencing0NodeFactory(final Q10skWnpo0Node node) {
-        this.node = node;
-    }
-
-    /**
-     * The remembered node. May be called multiple times.
-     *
-     * @return 0 node, each call references the same instance.
-     */
     @Override
-    public Q10skWnpo0Node create() {
-        return node;
+    public SimpleApplyNode create(final Q10skHlwnpoWnableNode function, final Q10skHlwnpoNode argument) {
+        return new SimpleApplyNode(function, argument, this);
+//        return SimpleApplyNode(function, argument, (Q10skHlwnpoApplyNodeFactory) this);
     }
 
 }
