@@ -19,13 +19,14 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a wnpo node of q10sk state tree, where the function is 0x.
+ * Immutable object for creating hlwnpo Sxy node factories from Sxyz node factories.
  *
- * <p>Each Q10skWnpoWnableNode instance with 0x as a function should be of a class which implements this interface.
+ * <p>As Sxy apply method creates Sxyz nodes, it needs access to a Sxyz node factory.
+ * This is the way to create a Sxy factory which has such an access.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpo0xyNode extends Q10skWnpoWnableNode<Q10skWnpo0xNode> {
+public interface Q10skHlwnpoSxyNodeFactoryFactory extends OneArgumentFactory<Q10skHlwnpoSxyNodeFactory, Q10skHlwnpoSxyzNodeFactory> {
 
     // Nothing to add to what parent interfaces imply.
 

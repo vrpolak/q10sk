@@ -19,14 +19,13 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object representing a wnpo node of q10sk state tree, where the function is Sxy.
- *
- * <p>Each Q10skWnpoWnableNode instance with Sxy as a function should be of a class which implements this interface.
+ * Immutable object representing a weakly normalizable hlwnpo node other than Sxyz.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoSxyzNode extends Q10skWnpoWnableNode<Q10skWnpoWnizedNode> {
+public interface Q10skHlwnpoApplyNode extends Q10skHlwnpoWnableNode {
 
     // Nothing to add to what parent interfaces imply.
+    // This is just a marker to enable a stronger type checking.
 
 }

@@ -19,11 +19,14 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object for creating wnpo Qxy nodes from two arguments.
+ * Immutable object for creating hlwnpo Q node factories from Qx node factories.
+ *
+ * <p>As Q apply method creates Qx nodes, it needs access to a Qx node factory.
+ * This is the way to create a Q factory which has such an access.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoQxyNodeFactory extends TwoArgumentFactory<Q10skWnpoQxyNode, Q10skWnpoNode> {
+public interface Q10skHlwnpoQNodeFactoryFactory extends OneArgumentFactory<Q10skHlwnpoQNodeFactory, Q10skHlwnpoQxNodeFactory> {
 
     // Nothing to add to what parent interfaces imply.
 

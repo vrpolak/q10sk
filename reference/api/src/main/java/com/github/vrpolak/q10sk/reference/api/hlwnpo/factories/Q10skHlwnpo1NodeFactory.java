@@ -19,11 +19,11 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object for creating wnpo Q nodes of q10sk state tree.
+ * Immutable object for creating hlwnpo 1 nodes of q10sk state tree.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoQNodeFactory extends ZeroArgumentFactory<Q10skWnpoQNode> {
+public interface Q10skHlwnpo1NodeFactory extends ZeroArgumentFactory<Q10skHlwnpo1Node> {
 
     // Nothing to add to what parent interfaces imply.
 

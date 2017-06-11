@@ -19,11 +19,11 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object for creating wnpo S nodes of q10sk state tree.
+ * Immutable object for creating hlwnpo Sxy nodes from two arguments.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoSNodeFactory extends ZeroArgumentFactory<Q10skWnpoSNode> {
+public interface Q10skHlwnpoSxyNodeFactory extends TwoArgumentFactory<Q10skHlwnpoSxyNode, Q10skHlwnpoNode> {
 
     // Nothing to add to what parent interfaces imply.
 

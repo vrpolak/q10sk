@@ -73,7 +73,7 @@ The result of Q rule is not simpler as a tree,
 but it moves Q closer to the root.
 
 Eager application of every rule except the S rule is called
-half laze evaluation in this document.
+half lazy evaluation in this document.
 It will be used in the reference interpreter,
 but of course other interpreters may chose other evaluations,
 as long as they do not get stuck on programs which are halting in lazy evaluation.
@@ -105,3 +105,12 @@ That is it. Here are the reduction rules in unlambda syntax:
 <code>\`\`1xy = \`1\`xy</code>
 
 <code>\`\`\`Qxyz = \`\`Q\`xz\`yz</code>
+
+An interesting alternative to half lazy evaluation is half eager evaluation.
+There, z argument is weakly normalized before applying S rule.
+This gets stuck if z argument does not have a weakly normalized form,
+but reasonable programs should be able to avoid such z arguments
+in S expressions never executing the z argument.
+So half eager evaluation would run faster on the reasonable programs,
+but it would not be suited for randomly generated programs,
+or programs iterating over all source codes (such as resource limited Solomonoff induction).

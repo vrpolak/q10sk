@@ -19,11 +19,14 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object for creating wnpo Sxyz nodes from three arguments.
+ * Immutable object for creating hlwnpo K node factories from Kx node factories.
+ *
+ * <p>As K apply method creates Kx nodes, it needs access to a Kx node factory.
+ * This is the way to create a K factory which has such an access.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoSxyzNodeFactory extends ThreeArgumentFactory<Q10skWnpoSxyzNode, Q10skWnpoNode> {
+public interface Q10skHlwnpoKNodeFactoryFactory extends OneArgumentFactory<Q10skHlwnpoKNodeFactory, Q10skHlwnpoKxNodeFactory> {
 
     // Nothing to add to what parent interfaces imply.
 

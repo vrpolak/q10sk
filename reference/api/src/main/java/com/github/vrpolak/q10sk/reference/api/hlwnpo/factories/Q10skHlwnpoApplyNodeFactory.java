@@ -19,11 +19,16 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object for creating wnpo Sx nodes from one argument.
+ * Immutable object for creating hlwnpo apply nodes from function and argument nodes.
+ *
+ * <p>This is for creating inner nodes far from leafs.
+ * The first argument should be apply node or Sxyz node,
+ * as each othe other function have a rule to be applied
+ * as soon as possible in half lazy evaluation.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoSxNodeFactory extends OneArgumentFactory<Q10skWnpoSxNode, Q10skWnpoNode> {
+public interface Q10skHlwnpoApplyNodeFactory extends TwoHeteroArgumentFactory<Q10skHlwnpoApplyNode, Q10skHlwnpoWnableNode, Q10skHlwnpoNode> {
 
     // Nothing to add to what parent interfaces imply.
 

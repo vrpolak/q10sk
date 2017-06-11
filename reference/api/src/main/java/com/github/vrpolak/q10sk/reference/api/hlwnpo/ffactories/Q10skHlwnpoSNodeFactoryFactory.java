@@ -19,11 +19,14 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object for creating wnpo 1x nodes from one argument.
+ * Immutable object for creating hlwnpo S node factories from Sx node factories.
+ *
+ * <p>As S apply method creates Sx nodes, it needs access to a Sx node factory.
+ * This is the way to create a S factory which has such an access.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpo1xNodeFactory extends OneArgumentFactory<Q10skWnpo1xNode, Q10skWnpoNode> {
+public interface Q10skHlwnpoSNodeFactoryFactory extends OneArgumentFactory<Q10skHlwnpoSNodeFactory, Q10skHlwnpoSxNodeFactory> {
 
     // Nothing to add to what parent interfaces imply.
 

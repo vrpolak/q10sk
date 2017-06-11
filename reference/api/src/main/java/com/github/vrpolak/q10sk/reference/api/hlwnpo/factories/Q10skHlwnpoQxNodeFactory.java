@@ -19,11 +19,11 @@
 package com.github.vrpolak.q10sk.reference.api;
 
 /**
- * Immutable object for creating wnpo Qx nodes from one argument.
+ * Immutable object for creating hlwnpo Qx nodes from one argument.
  *
  * @author Vratko Polak
  */
-public interface Q10skWnpoQxNodeFactory extends OneArgumentFactory<Q10skWnpoQxNode, Q10skWnpoNode> {
+public interface Q10skHlwnpoQxNodeFactory extends OneArgumentFactory<Q10skHlwnpoQxNode, Q10skHlwnpoNode> {
 
     // Nothing to add to what parent interfaces imply.
 
