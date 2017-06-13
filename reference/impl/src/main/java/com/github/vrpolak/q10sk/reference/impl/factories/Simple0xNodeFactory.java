@@ -16,24 +16,23 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.impl.apply;
+package com.github.vrpolak.q10sk.reference.impl._0x;
 
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoApplyNodeFactory;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWnableNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpo0xNodeFactory;
 
 /**
- * Immutable object for creating apply nodes restricted to SimpleApplyNode implementation.
+ * Immutable object for creating 0x nodes restricted to Simple0xNode implementation.
  *
  * @author Vratko Polak
  */
-public class SimpleApplyNodeFactory implements Q10skHlwnpoApplyNodeFactory {
+public class Simple0xNodeFactory implements Q10skHlwnpo0xNodeFactory {
 
     // The implicit zero-argument constructor is public for anyone to use.
 
     @Override
-    public SimpleApplyNode create(final Q10skHlwnpoWnableNode function, final Q10skHlwnpoNode argument) {
-        return new SimpleApplyNode(function, argument, this);
+    public Simple0xNode create(final Q10skHlwnpoNode argumentX) {
+        return new Simple0xNode(argumentX, this);
     }
 
 }

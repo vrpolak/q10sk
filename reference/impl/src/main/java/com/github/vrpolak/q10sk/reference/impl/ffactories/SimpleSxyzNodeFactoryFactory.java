@@ -16,24 +16,26 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.impl.apply;
+package com.github.vrpolak.q10sk.reference.impl.sxyz;
 
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoApplyNodeFactory;
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWnableNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoSxyzNodeFactoryFactory;
 
 /**
- * Immutable object for creating apply nodes restricted to SimpleApplyNode implementation.
+ * Immutable object for creating hlwnpo Sxyz node factories from apply node factories.
+ *
+ * <p>As Sxyz apply method creates apply nodes, it needs access to an apply node factory.
+ * This is the way to create a Sxyz factory which has such an access.
  *
  * @author Vratko Polak
  */
-public class SimpleApplyNodeFactory implements Q10skHlwnpoApplyNodeFactory {
+public class SimpleSxyzNodeFactoryFactory implements Q10skHlwnpoSxyzNodeFactoryFactory {
 
     // The implicit zero-argument constructor is public for anyone to use.
 
     @Override
-    public SimpleApplyNode create(final Q10skHlwnpoWnableNode function, final Q10skHlwnpoNode argument) {
-        return new SimpleApplyNode(function, argument, this);
+    public SimpleSxyzNodeFactory create(final Q10skHlwnpoApplyNodeFactory simpleApplyFactory) {
+        return new SimpleSxyzNodeFactory(simpleApplyFactory);
     }
 
 }

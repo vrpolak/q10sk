@@ -16,24 +16,26 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.impl.apply;
+package com.github.vrpolak.q10sk.reference.impl.sx;
 
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoApplyNodeFactory;
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWnableNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoSxNodeFactoryFactory;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoSxyNodeFactory;
 
 /**
- * Immutable object for creating apply nodes restricted to SimpleApplyNode implementation.
+ * Immutable object for creating hlwnpo Sx node factories from Sxy node factories.
+ *
+ * <p>As Sx apply method creates Sxy nodes, it needs access to an Sxy node factory.
+ * This is the way to create a Sx factory which has such an access.
  *
  * @author Vratko Polak
  */
-public class SimpleApplyNodeFactory implements Q10skHlwnpoApplyNodeFactory {
+public class SimpleSxNodeFactoryFactory implements Q10skHlwnpoSxNodeFactoryFactory {
 
     // The implicit zero-argument constructor is public for anyone to use.
 
     @Override
-    public SimpleApplyNode create(final Q10skHlwnpoWnableNode function, final Q10skHlwnpoNode argument) {
-        return new SimpleApplyNode(function, argument, this);
+    public SimpleSxNodeFactory create(final Q10skHlwnpoSxyNodeFactory simpleSxyFactory) {
+        return new SimpleSxNodeFactory(simpleSxyFactory);
     }
 
 }
