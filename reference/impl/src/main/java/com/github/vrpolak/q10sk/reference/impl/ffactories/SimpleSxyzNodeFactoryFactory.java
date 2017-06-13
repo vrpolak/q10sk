@@ -31,6 +31,8 @@ import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoSxyzNodeFactoryFactory;
  */
 public class SimpleSxyzNodeFactoryFactory implements Q10skHlwnpoSxyzNodeFactoryFactory {
 
+    // The implicit zero-argument constructor is public for anyone to use.
+
     @Override
     public SimpleSxyzNodeFactory create(final Q10skHlwnpoApplyNodeFactory simpleApplyFactory) {
         return new SimpleSxyzNodeFactory(simpleApplyFactory);

@@ -16,24 +16,26 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.impl.apply;
+package com.github.vrpolak.q10sk.reference.impl.qx;
 
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoApplyNodeFactory;
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWnableNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoQxNodeFactoryFactory;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoQxyNodeFactory;
 
 /**
- * Immutable object for creating apply nodes restricted to SimpleApplyNode implementation.
+ * Immutable object for creating hlwnpo Qx node factories from Qxy node factories.
+ *
+ * <p>As Qx apply method creates Qxy nodes, it needs access to an Qxy node factory.
+ * This is the way to create a Qx factory which has such an access.
  *
  * @author Vratko Polak
  */
-public class SimpleApplyNodeFactory implements Q10skHlwnpoApplyNodeFactory {
+public class SimpleQxNodeFactoryFactory implements Q10skHlwnpoQxNodeFactoryFactory {
 
     // The implicit zero-argument constructor is public for anyone to use.
 
     @Override
-    public SimpleApplyNode create(final Q10skHlwnpoWnableNode function, final Q10skHlwnpoNode argument) {
-        return new SimpleApplyNode(function, argument, this);
+    public SimpleQxNodeFactory create(final Q10skHlwnpoQxyNodeFactory simpleQxyFactory) {
+        return new SimpleQxNodeFactory(simpleQxyFactory);
     }
 
 }

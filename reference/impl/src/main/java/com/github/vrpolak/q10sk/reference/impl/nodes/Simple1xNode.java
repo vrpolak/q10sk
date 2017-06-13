@@ -29,18 +29,19 @@ import com.github.vrpolak.q10sk.reference.impl.SimpleBit;
  *
  * @author Vratko Polak
  */
-class Simple1xNode implements Q10skHlwnpo1xNode {
+public class Simple1xNode implements Q10skHlwnpo1xNode {
 
     private final Q10skHlwnpoNode argumentX;
     private final Q10skHlwnpo1xNodeFactory simple1xFactory;
 
+    // Package-private constructor for *Factory to use.
     Simple1xNode(final Q10skHlwnpoNode argumentX, final Q10skHlwnpo1xNodeFactory simple1xFactory) {
         this.argumentX = argumentX;
         this.simple1xFactory = simple1xFactory;
     }
 
     @Override
-    public Simple1xNode apply(final Q10skHlwnpoNode argumentY) {
+    public Q10skHlwnpo1xNode apply(final Q10skHlwnpoNode argumentY) {
         return this.simple1xFactory.create(this.argumentX.apply(argumentY));
     }
 

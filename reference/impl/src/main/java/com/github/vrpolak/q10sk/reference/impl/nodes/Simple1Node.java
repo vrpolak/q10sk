@@ -16,9 +16,10 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.impl._1  // to only allow 1 factory acces to the constructor
+package com.github.vrpolak.q10sk.reference.impl._1;  // to only allow 1 factory acces to the constructor
 
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpo1Node;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpo1xNode;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpo1xNodeFactory;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
 
@@ -27,16 +28,17 @@ import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
  *
  * @author Vratko Polak
  */
-class Simple1Node implements Q10skHlwnpo1Node {
+public class Simple1Node implements Q10skHlwnpo1Node {
 
     private final Q10skHlwnpo1xNodeFactory simple1xFactory;
 
+    // Package-private constructor for *Factory to use.
     Simple1Node(final Q10skHlwnpo1xNodeFactory simple1xFactory) {
         this.simple1xFactory = simple1xFactory;
     }
 
     @Override
-    public Simple1xNode apply(final Q10skHlwnpoNode argumentX) {
+    public Q10skHlwnpo1xNode apply(final Q10skHlwnpoNode argumentX) {
         return this.simple1xFactory.create(argumentX);
     }
 

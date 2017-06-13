@@ -26,10 +26,11 @@ import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
  *
  * @author Vratko Polak
  */
-class SimpleKxNode implements Q10skHlwnpoKxNode {
+public class SimpleKxNode implements Q10skHlwnpoKxNode {
 
     private final Q10skHlwnpoNode argumentX;
 
+    // Package-private constructor for *Factory to use.
     SimpleKxNode(final Q10skHlwnpoNode argumentX) {
         this.argumentX = argumentX;
     }

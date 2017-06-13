@@ -19,6 +19,7 @@
 package com.github.vrpolak.q10sk.reference.impl.q;  // to only allow q factory acces to the constructor
 
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoQNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoQxNode;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoQxNodeFactory;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
 
@@ -27,16 +28,17 @@ import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
  *
  * @author Vratko Polak
  */
-class SimpleQNode implements Q10skHlwnpoQNode {
+public class SimpleQNode implements Q10skHlwnpoQNode {
 
     private final Q10skHlwnpoQxNodeFactory simpleQxFactory;
 
+    // Package-private constructor for *Factory to use.
     SimpleQNode(final Q10skHlwnpoQxNodeFactory simpleQxFactory) {
         this.simpleQxFactory = simpleQxFactory;
     }
 
     @Override
-    public SimpleQxNode apply(final Q10skHlwnpoNode argumentX) {
+    public Q10skHlwnpoQxNode apply(final Q10skHlwnpoNode argumentX) {
         return this.simpleQxFactory.create(argumentX);
     }
 

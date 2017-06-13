@@ -28,12 +28,13 @@ import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
  *
  * @author Vratko Polak
  */
-class SimpleQxyNode implements Q10skHlwnpoQxyNode {
+public class SimpleQxyNode implements Q10skHlwnpoQxyNode {
 
     private final Q10skHlwnpoNode argumentX;
     private final Q10skHlwnpoNode argumentY;
     private final Q10skHlwnpoQxyNodeFactory simpleQxyFactory;
 
+    // Package-private constructor for *Factory to use.
     SimpleQxyNode(final Q10skHlwnpoNode argumentX, final Q10skHlwnpoNode argumentY, final Q10skHlwnpoQxyNodeFactory simpleQxyFactory) {
         this.argumentX = argumentX;
         this.argumentY = argumentY;
@@ -41,7 +42,7 @@ class SimpleQxyNode implements Q10skHlwnpoQxyNode {
     }
 
     @Override
-    public SimpleQxyNode apply(final Q10skHlwnpoNode argumentZ) {
+    public Q10skHlwnpoQxyNode apply(final Q10skHlwnpoNode argumentZ) {
         return this.simpleQxyFactory.create(this.argumentX.apply(argumentZ), this.argumentY.apply(argumentZ));
     }
 
@@ -52,7 +53,7 @@ class SimpleQxyNode implements Q10skHlwnpoQxyNode {
 
     @Override
     public Q10skHlwnpoNode input(BitProducer producer) {
-        return producer.produce().isOne() ? this.argumentY : this.argumentX;
+        return producer.produceBit().isOne() ? this.argumentY : this.argumentX;
     }
 
 }

@@ -16,41 +16,29 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.impl.apply;  // to only allow apply factory acces to the constructor
+package com.github.vrpolak.q10sk.reference.impl.sxyz;
 
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoApplyNode;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoApplyNodeFactory;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWnableNode;
-import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWnizedNode;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoSxyzNodeFactory;
 
 /**
- * Immutable object representing a weakly normalizable hlwnpo node other than Sxyz.
+ * Immutable object for creating Sxyz nodes restricted to SimpleSxyzNode implementation.
  *
  * @author Vratko Polak
  */
-public class SimpleApplyNode implements Q10skHlwnpoApplyNode {
+public class SimpleSxyzNodeFactory implements Q10skHlwnpoSxyzNodeFactory {
 
-    private final Q10skHlwnpoWnableNode function;
-    private final Q10skHlwnpoNode argumentX;
     private final Q10skHlwnpoApplyNodeFactory simpleApplyFactory;
 
     // Package-private constructor for *Factory to use.
-    SimpleApplyNode(final Q10skHlwnpoWnableNode argumentF, final Q10skHlwnpoNode argumentX, final Q10skHlwnpoApplyNodeFactory simpleApplyFactory) {
-        this.function = argumentF;
-        this.argumentX = argumentX;
+    SimpleSxyzNodeFactory(final Q10skHlwnpoApplyNodeFactory simpleApplyFactory) {
         this.simpleApplyFactory = simpleApplyFactory;
     }
 
     @Override
-    public Q10skHlwnpoApplyNode apply(final Q10skHlwnpoNode argumentY) {
-        return this.simpleApplyFactory.create(this, argumentY);
-    }
-
-    @Override
-    public Q10skHlwnpoWnizedNode weaklyNormalize() {
-        // As this.function is NOT weakly normalized, the following is guaranteed to make progress.
-        return this.function.weaklyNormalize().apply(this.argumentX).weaklyNormalize();
+    public SimpleSxyzNode create(final Q10skHlwnpoNode argumentX, final Q10skHlwnpoNode argumentY, final Q10skHlwnpoNode argumentZ) {
+        return new SimpleSxyzNode(argumentX, argumentY, argumentZ, this.simpleApplyFactory);
     }
 
 }
