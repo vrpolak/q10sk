@@ -107,4 +107,24 @@ public class InputOutputTest {
         Assert.assertEquals("Q node has not returned first argument", sS, halted);
     }
 
+    /**
+     * Q01K should echo one bit. This tests AsseringSystem queueing.
+     */
+    @Test
+    public void singleEchoTest() {
+        AssertingSystem system;  // TODO: Extract API for additinal methods not in BitSystem.
+        Q10skHlwnpoWnizedNode halted;
+        final Q10skHlwnpoNode q01k = sQ.apply(s0).apply(s1).apply(sK);
+
+        system = new AssertingSystem().shallGet(ZERO).shallAccept(ZERO);
+        halted = runner.run(system, q01k);
+        system.assertExhausted();
+        Assert.assertEquals("Q01K has not returned K", sK, halted);
+
+        system = new AssertingSystem().shallGet(ONE).shallAccept(ONE);
+        halted = runner.run(system, q01k);
+        system.assertExhausted();
+        Assert.assertEquals("Q01K has not returned K", sK, halted);
+    }
+
 }
