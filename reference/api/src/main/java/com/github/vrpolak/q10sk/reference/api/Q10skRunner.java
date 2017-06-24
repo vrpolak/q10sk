@@ -28,7 +28,7 @@ package com.github.vrpolak.q10sk.reference.api;
  *
  * @author Vratko Polak
  */
-public interface Q10skRunner<NODE extends Q10skStateTreeRootNode> {
+public interface Q10skRunner<INITIAL extends Q10skStateTreeRootNode, HALTED extends INITIAL> {
 
     /*
      * Run a program, calling the system for output and input, starting from initial state.
@@ -36,13 +36,13 @@ public interface Q10skRunner<NODE extends Q10skStateTreeRootNode> {
      * <p>If the program reaches a halted state, return the final state, otherwise keep executing indefinitely.
      *
      * <p>This is a generic, as Q10skStateTreeRootNode itself does not expose any methods
-     * which would enable program execution. It is assumed NODE type exposes such methods,
+     * which would enable program execution. It is assumed INITIAL interface declares such methods,
      * and runners using them would be of an interface extending this and documenting the execution method.
      *
      * @param system  the system to be called when the program wants to output or input, mutated on call
      * @param initialState  the initial state of the program, never changed
      * @return  the halted state
      */
-    NODE run(final BitSystem system, final NODE initialState);
+    HALTED run(final BitSystem system, final INITIAL initialState);
 
 }
