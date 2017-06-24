@@ -127,4 +127,28 @@ public class InputOutputTest {
         Assert.assertEquals("Q01K has not returned K", sK, halted);
     }
 
+    /**
+     * K01S should output 0 and return S.
+     */
+    @Test
+    public void kOutputTest() {
+        AssertingSystem system = new AssertingSystem().shallAccept(ZERO);
+        Q10skHlwnpoWnizedNode halted = runner.run(system, sK.apply(s0).apply(s1).apply(sS));
+        system.assertExhausted();
+        Assert.assertEquals("K01S has not returned S", sS, halted);
+    }
+
+    /**
+     * SK01S should output 1 and return S.
+     */
+    @Test
+    public void skOutputTest() {
+        AssertingSystem system = new AssertingSystem().shallAccept(ONE);
+        Q10skHlwnpoWnizedNode halted = runner.run(system, sS.apply(sK).apply(s0).apply(s1).apply(sS));
+        system.assertExhausted();
+        Assert.assertEquals("SK01S has not returned S", sS, halted);
+    }
+
+    // TODO: Figure out how to test non-halting programs,
+    // such as SII(SII) and infinite echo.
 }
