@@ -31,7 +31,7 @@ package com.github.vrpolak.q10sk.reference.api;
 public interface Q10skRunner<NODE extends Q10skStateTreeRootNode> {
 
     /*
-     * Run a program, calling consumer and supplier for output and input repsectively, starting from initial state.
+     * Run a program, calling the system for output and input, starting from initial state.
      *
      * <p>If the program reaches a halted state, return the final state, otherwise keep executing indefinitely.
      *
@@ -39,11 +39,10 @@ public interface Q10skRunner<NODE extends Q10skStateTreeRootNode> {
      * which would enable program execution. It is assumed NODE type exposes such methods,
      * and runners using them would be of an interface extending this and documenting the execution method.
      *
-     * @param consumer  the consumer to be called when the program want to output, mutated on call
-     * @param supplier  the supplier to call when the program requires input, mutated on call
+     * @param system  the system to be called when the program wants to output or input, mutated on call
      * @param initialState  the initial state of the program, never changed
      * @return  the halted state
      */
-    NODE run(final BitConsumer consumer, final BitSupplier supplier, final NODE initialState);
+    NODE run(final System system, final NODE initialState);
 
 }
