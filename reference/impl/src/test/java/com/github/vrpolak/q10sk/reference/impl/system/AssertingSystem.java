@@ -16,17 +16,45 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.impl;
+package com.github.vrpolak.q10sk.reference.impl.test;
 
 import com.github.vrpolak.q10sk.reference.api.BitSystem;
 import com.github.vrpolak.q10sk.reference.api.ImmutableBit;
+import java.util.ArrayDeque;
+import java.util.Queue;
 import org.junit.Assert;
 
 /**
- * FIXME
+ * Mutable system which maintains a queue of assering input/output operations.
  *
  * @author Vratko Polak
  */
 public class AssertingSystem implements BitSystem {
+
+    private Queue<BitSystem> operationsQueue = new ArrayDeque<BitSystem>(1);
+
+    // The implicit zero-argument constructor is public for anyone to use.
+
+    public AssertingSystem shallAccept(final ImmutableBit expectedBit) {
+        this.operationsQueue.add(new AssertingConsumerItem(expectedBit));
+        return this;
+    }
+
+    public AssertingSystem shallGet(final ImmutableBit expectedBit) {
+        this.operationsQueue.add(new AssertingSupplierItem(expectedBit));
+        return this;
+    }
+
+    @Override
+    public void accept(final ImmutableBit actualBit) {
+        Assert.assertFalse("System does not expect any output (or input) at this point.", this.operationsQueue.isEmpty());
+        this.operationsQueue.remove().accept(actualBit);
+    }
+
+    @Override
+    public ImmutableBit get() {
+        Assert.assertFalse("System does not expect any input (or output) at this point.", this.operationsQueue.isEmpty());
+        return this.operationsQueue.remove().get();
+    }
 
 }

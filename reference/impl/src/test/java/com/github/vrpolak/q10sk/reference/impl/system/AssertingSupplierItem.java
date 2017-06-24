@@ -16,7 +16,7 @@
  */
 // TODO: Also add information on how to contact you by electronic and paper mail.
 
-package com.github.vrpolak.q10sk.reference.impl;
+package com.github.vrpolak.q10sk.reference.impl.test;
 
 import com.github.vrpolak.q10sk.reference.api.BitSystem;
 import com.github.vrpolak.q10sk.reference.api.ImmutableBit;
