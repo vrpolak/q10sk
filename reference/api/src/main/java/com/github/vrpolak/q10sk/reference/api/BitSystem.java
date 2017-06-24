@@ -23,7 +23,7 @@ package com.github.vrpolak.q10sk.reference.api;
  *
  * @author Vratko Polak
  */
-public interface System extends BitConsumer, BitSupplier {
+public interface BitSystem extends BitConsumer, BitSupplier {
 
     // Nothing to add to what parent interfaces imply.
 

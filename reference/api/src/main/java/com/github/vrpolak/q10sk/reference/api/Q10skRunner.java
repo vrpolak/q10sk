@@ -43,6 +43,6 @@ public interface Q10skRunner<NODE extends Q10skStateTreeRootNode> {
      * @param initialState  the initial state of the program, never changed
      * @return  the halted state
      */
-    NODE run(final System system, final NODE initialState);
+    NODE run(final BitSystem system, final NODE initialState);
 
 }
