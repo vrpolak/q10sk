@@ -35,6 +35,10 @@ public class AssertingSystem implements BitSystem {
 
     // The implicit zero-argument constructor is public for anyone to use.
 
+    public void assertExhausted() {
+        Assert.assertTrue("Program returned before performing all expected operations.", this.operationsQueue.isEmpty());
+    }
+
     public AssertingSystem shallAccept(final ImmutableBit expectedBit) {
         this.operationsQueue.add(new AssertingConsumerItem(expectedBit));
         return this;
