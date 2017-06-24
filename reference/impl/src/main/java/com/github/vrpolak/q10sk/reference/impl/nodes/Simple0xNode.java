@@ -52,7 +52,7 @@ public class Simple0xNode implements Q10skHlwnpo0xNode {
 
     @Override
     public Q10skHlwnpoNode output(final BitConsumer consumer) {
-        consumer.consumeBit(SimpleBit.ZERO);
+        consumer.accept(SimpleBit.ZERO);
         return this.argumentX;
     }
 

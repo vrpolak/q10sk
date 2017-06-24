@@ -18,18 +18,16 @@
 
 package com.github.vrpolak.q10sk.reference.api;
 
+import java.util.function.Supplier;
+
 /**
- * Mutable object able to produce ImmutableBit instances on demand.
+ * Mutable object able to supply ImmutableBit instances on demand.
  *
  * @author Vratko Polak
  */
-public interface BitProducer {
+public interface BitSupplier extends Supplier<ImmutableBit> {
 
-    /**
-     * Return the bit and mutate itself (with side effects) to produce the next bit on the next call.
-     *
-     * @return new ImmutableBit, it may be a reference to an already produced bit.
-     */
-    ImmutableBit produceBit();
+    // The get method mutates this (with side effects)
+    // in preparation for producing next bit on the next call.
 
 }

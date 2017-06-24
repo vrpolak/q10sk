@@ -29,10 +29,10 @@ public interface Q10skHlwnpoInputNode<APPLIED extends Q10skHlwnpoKnownizedNode<A
     /**
      * Return a root node equivalent to the state tree after performing input operation.
      *
-     * <p>Returns always and quickly, unless producer interferes.
+     * <p>Returns always and quickly, unless supplier interferes.
      *
      * @return node, perhaps newly constructed, perhaps reference to existing one.
      */
-    Q10skHlwnpoNode input(final BitProducer producer);
+    Q10skHlwnpoNode input(final BitSupplier supplier);
 
 }

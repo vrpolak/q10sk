@@ -18,18 +18,16 @@
 
 package com.github.vrpolak.q10sk.reference.api;
 
+import java.util.function.Consumer;
+
 /**
  * Mutable object able to consume ImmutableBit instances on demand.
  *
  * @author Vratko Polak
  */
-public interface BitConsumer {
+public interface BitConsumer extends Consumer<ImmutableBit> {
 
-    /**
-     * Mutate itself (with side effects) in preparation for consuming the next bit on the next call.
-     *
-     * @param bit to base the side effects on.
-     */
-    void consumeBit(final ImmutableBit bit);
+    // The accept method mutates this (with side effects)
+    // in preparation for consuming the next bit on the next call.
 
 }

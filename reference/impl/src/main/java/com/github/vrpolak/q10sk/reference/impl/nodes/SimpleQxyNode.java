@@ -18,7 +18,7 @@
 
 package com.github.vrpolak.q10sk.reference.impl.qxy;  // to only allow qxy factory acces to the constructor
 
-import com.github.vrpolak.q10sk.reference.api.BitProducer;
+import com.github.vrpolak.q10sk.reference.api.BitSupplier;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoQxyNode;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoQxyNodeFactory;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
@@ -52,8 +52,8 @@ public class SimpleQxyNode implements Q10skHlwnpoQxyNode {
     }
 
     @Override
-    public Q10skHlwnpoNode input(BitProducer producer) {
-        return producer.produceBit().isOne() ? this.argumentY : this.argumentX;
+    public Q10skHlwnpoNode input(BitSupplier supplier) {
+        return supplier.get().isOne() ? this.argumentY : this.argumentX;
     }
 
 }
