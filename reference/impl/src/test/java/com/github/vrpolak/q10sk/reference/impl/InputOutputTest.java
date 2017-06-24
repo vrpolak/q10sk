@@ -44,6 +44,7 @@ public class InputOutputTest {
     private final Q10skHlwnpoNode sK = wiring.getKNode();
     private final Q10skHlwnpoNode sQ = wiring.getQNode();
     private final Q10skHlwnpoNode sS = wiring.getSNode();
+    private final Q10skHlwnpoNode sI = sS.apply(sK).apply(sK);
     private final BitSystem emptySystem = new AssertingSystem();
     private final Q10skHlwnpoRunner runner = new SimpleRunner();
 
@@ -65,7 +66,7 @@ public class InputOutputTest {
         assertHalted(sK.apply(sK));
         assertHalted(sQ.apply(sK));
         assertHalted(sS.apply(sK));
-        assertHalted(sS.apply(sK).apply(sK));
+        assertHalted(sI);
     }
 
     /**
@@ -132,8 +133,8 @@ public class InputOutputTest {
      */
     @Test
     public void kOutputTest() {
-        AssertingSystem system = new AssertingSystem().shallAccept(ZERO);
-        Q10skHlwnpoWnizedNode halted = runner.run(system, sK.apply(s0).apply(s1).apply(sS));
+        final AssertingSystem system = new AssertingSystem().shallAccept(ZERO);
+        final Q10skHlwnpoWnizedNode halted = runner.run(system, sK.apply(s0).apply(s1).apply(sS));
         system.assertExhausted();
         Assert.assertEquals("K01S has not returned S", sS, halted);
     }
@@ -143,10 +144,27 @@ public class InputOutputTest {
      */
     @Test
     public void skOutputTest() {
-        AssertingSystem system = new AssertingSystem().shallAccept(ONE);
-        Q10skHlwnpoWnizedNode halted = runner.run(system, sS.apply(sK).apply(s0).apply(s1).apply(sS));
+        final AssertingSystem system = new AssertingSystem().shallAccept(ONE);
+        final Q10skHlwnpoWnizedNode halted = runner.run(system, sS.apply(sK).apply(s0).apply(s1).apply(sS));
         system.assertExhausted();
         Assert.assertEquals("SK01S has not returned S", sS, halted);
+    }
+
+    /**
+     * Extracting output nodes as single arguments creates interesting S constructions.
+     *
+     * <p>01001K = (01)(001)K = S0(00)1K = S0((I0)(I0))1K = S0(SII0)1K = SS(SII)01K
+     *
+     * <p> so this also tests SII behavior.
+     */
+    @Test
+    public void afterEffectTest() {
+        final Q10skHlwnpoNode sii = sS.apply(sI).apply(sI);
+        final Q10skHlwnpoNode program = sS.apply(sS).apply(sii).apply(s0).apply(s1).apply(sK);
+        final AssertingSystem system = new AssertingSystem().shallAccept(ZERO).shallAccept(ONE).shallAccept(ZERO).shallAccept(ZERO).shallAccept(ONE);
+        final Q10skHlwnpoWnizedNode halted = runner.run(system, program);
+        system.assertExhausted();
+        Assert.assertEquals("After effect has not returned K", sK, halted);
     }
 
     // TODO: Figure out how to test non-halting programs,
