@@ -22,10 +22,14 @@ import com.github.vrpolak.q10sk.reference.api.BitSystem;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoNode;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoRunner;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWiring;
+import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWnizedNode;
 import com.github.vrpolak.q10sk.reference.impl.SimpleRunner;
 import com.github.vrpolak.q10sk.reference.impl.wiring.DefaultWiring;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static com.github.vrpolak.q10sk.reference.impl.SimpleBit.ONE;
+import static com.github.vrpolak.q10sk.reference.impl.SimpleBit.ZERO;
 
 /**
  * Test input-output behavior of several short programs.
@@ -52,7 +56,7 @@ public class InputOutputTest {
      * Leaf and near nodes which should.
      */
     @Test
-    public void HaltedTest() {
+    public void haltedTest() {
         assertHalted(s0);
         assertHalted(s1);
         assertHalted(sK);
@@ -62,6 +66,25 @@ public class InputOutputTest {
         assertHalted(sQ.apply(sK));
         assertHalted(sS.apply(sK));
         assertHalted(sS.apply(sK).apply(sK));
+    }
+
+    /**
+     * 0 and 1 nodes with one argument should output.
+     */
+    @Test
+    public void outputTest() {
+        AssertingSystem system;  // TODO: Extract API for additinal methods not in BitSystem.
+        Q10skHlwnpoWnizedNode halted;
+
+        system = new AssertingSystem().shallAccept(ZERO);
+        halted = runner.run(system, s0.apply(sK));
+        system.assertExhausted();
+        Assert.assertEquals("0 node has not returned its argument", sK, halted);
+
+        system = new AssertingSystem().shallAccept(ONE);
+        halted = runner.run(system, s1.apply(sK));
+        system.assertExhausted();
+        Assert.assertEquals("1 node has not returned its argument", sK, halted);
     }
 
 }
