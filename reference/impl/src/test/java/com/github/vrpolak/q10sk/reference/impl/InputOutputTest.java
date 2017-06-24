@@ -69,7 +69,7 @@ public class InputOutputTest {
     }
 
     /**
-     * 0 and 1 nodes with one argument should output.
+     * 0 and 1 nodes with one argument should output and return the argument.
      */
     @Test
     public void outputTest() {
@@ -85,6 +85,26 @@ public class InputOutputTest {
         halted = runner.run(system, s1.apply(sK));
         system.assertExhausted();
         Assert.assertEquals("1 node has not returned its argument", sK, halted);
+    }
+
+    /**
+     * Qxy node should return one of arguments.
+     */
+    @Test
+    public void inputTest() {
+        AssertingSystem system;  // TODO: Extract API for additinal methods not in BitSystem.
+        Q10skHlwnpoWnizedNode halted;
+        final Q10skHlwnpoNode qks = sQ.apply(sK).apply(sS);
+
+        system = new AssertingSystem().shallGet(ZERO);
+        halted = runner.run(system, qks);
+        system.assertExhausted();
+        Assert.assertEquals("Q node has not returned first argument", sK, halted);
+
+        system = new AssertingSystem().shallGet(ONE);
+        halted = runner.run(system, qks);
+        system.assertExhausted();
+        Assert.assertEquals("Q node has not returned first argument", sS, halted);
     }
 
 }
