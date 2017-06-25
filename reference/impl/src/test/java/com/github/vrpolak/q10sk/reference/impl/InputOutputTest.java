@@ -25,6 +25,10 @@ import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWiring;
 import com.github.vrpolak.q10sk.reference.api.Q10skHlwnpoWnizedNode;
 import com.github.vrpolak.q10sk.reference.impl.SimpleRunner;
 import com.github.vrpolak.q10sk.reference.impl.wiring.DefaultWiring;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -174,6 +178,34 @@ public class InputOutputTest {
         assertHalts(implication,
                     start().shallGet(ONE).shallGet(ONE).shallAccept(ONE),
                     sK, message);
+    }
+
+    private ArrayDeque<Q10skHlwnpoNode> upcombine(final Collection<Q10skHlwnpoNode> base) {
+        final ArrayDeque<Q10skHlwnpoNode> result = new ArrayDeque<Q10skHlwnpoNode>(base);
+        for (final Q10skHlwnpoNode function : base) {
+            for (final Q10skHlwnpoNode argument : base) {
+                result.add(function.apply(argument));
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Black hole test. The point is to make sure the eaten function do not operate.
+     *
+     * <p>This also acts as a scale test and partly as a performance test.
+     */
+    @Test
+    public void blackHoleTest() {
+        final Q10skHlwnpoNode halfHole = sS.apply(sK.apply(sK)).apply(sii);
+        final List<Q10skHlwnpoNode> food = Arrays.asList(s0, s1, sK, sQ, sS, sI, sii, sS.apply(sK), sS.apply(sS));
+        // Adding more items to food would lead to StackOverflow with double upcombining.
+        Q10skHlwnpoNode program = sii.apply(halfHole);
+        for (final Q10skHlwnpoNode item : upcombine(upcombine(food))) {
+            program = program.apply(item);
+        }
+        // Do not call assertHalts, because  we do not have cache to recognize equivalent hungry form of black hole.
+        runner.run(emptySystem, program);
     }
 
     // TODO: Figure out how to test non-halting programs,
