@@ -38,19 +38,30 @@ import static com.github.vrpolak.q10sk.reference.impl.SimpleBit.ZERO;
  */
 public class InputOutputTest {
 
-    private final Q10skHlwnpoWiring wiring = new DefaultWiring();
-    private final Q10skHlwnpoNode s0 = wiring.get0Node();
-    private final Q10skHlwnpoNode s1 = wiring.get1Node();
-    private final Q10skHlwnpoNode sK = wiring.getKNode();
-    private final Q10skHlwnpoNode sQ = wiring.getQNode();
-    private final Q10skHlwnpoNode sS = wiring.getSNode();
-    private final Q10skHlwnpoNode sI = sS.apply(sK).apply(sK);
-    private final BitSystem emptySystem = new AssertingSystem();
-    private final Q10skHlwnpoRunner runner = new SimpleRunner();
+    private static final Q10skHlwnpoWiring wiring = new DefaultWiring();
+    private static final Q10skHlwnpoNode s0 = wiring.get0Node();
+    private static final Q10skHlwnpoNode s1 = wiring.get1Node();
+    private static final Q10skHlwnpoNode sK = wiring.getKNode();
+    private static final Q10skHlwnpoNode sQ = wiring.getQNode();
+    private static final Q10skHlwnpoNode sS = wiring.getSNode();
+    private static final Q10skHlwnpoNode sI = sS.apply(sK).apply(sK);
+    private static final Q10skHlwnpoNode sii = sS.apply(sI).apply(sI);
+    private static final AssertingSystem emptySystem = start();
+    private static final Q10skHlwnpoRunner runner = new SimpleRunner();
 
-    protected void assertHalted(final Q10skHlwnpoNode initial) {
-        final Q10skHlwnpoNode halted = runner.run(emptySystem, initial);
-        Assert.assertEquals("Given state is not halted.", initial, halted);
+    public static AssertingSystem start() {
+        return new AssertingSystem();
+    }
+
+    // TODO: Create an API for BitSystem with assertExhausted.
+    protected static void assertHalts(final Q10skHlwnpoNode initial, final AssertingSystem system, final Q10skHlwnpoNode expected, final String message) {
+        final Q10skHlwnpoNode halted = runner.run(system, initial);
+        system.assertExhausted();
+        Assert.assertEquals(message, expected, halted);
+    }
+
+    protected static void assertHalted(final Q10skHlwnpoNode initial) {
+        assertHalts(initial, emptySystem, initial, "Initial state is not halted.");
     }
 
     /**
@@ -74,18 +85,12 @@ public class InputOutputTest {
      */
     @Test
     public void outputTest() {
-        AssertingSystem system;  // TODO: Extract API for additinal methods not in BitSystem.
-        Q10skHlwnpoWnizedNode halted;
-
-        system = new AssertingSystem().shallAccept(ZERO);
-        halted = runner.run(system, s0.apply(sK));
-        system.assertExhausted();
-        Assert.assertEquals("0 node has not returned its argument", sK, halted);
-
-        system = new AssertingSystem().shallAccept(ONE);
-        halted = runner.run(system, s1.apply(sK));
-        system.assertExhausted();
-        Assert.assertEquals("1 node has not returned its argument", sK, halted);
+        assertHalts(s0.apply(sK),
+                    start().shallAccept(ZERO),
+                    sK, "0 node has not returned its argument");
+        assertHalts(s1.apply(sK),
+                    start().shallAccept(ONE),
+                    sK, "1 node has not returned its argument");
     }
 
     /**
@@ -93,39 +98,27 @@ public class InputOutputTest {
      */
     @Test
     public void inputTest() {
-        AssertingSystem system;  // TODO: Extract API for additinal methods not in BitSystem.
-        Q10skHlwnpoWnizedNode halted;
         final Q10skHlwnpoNode qks = sQ.apply(sK).apply(sS);
-
-        system = new AssertingSystem().shallGet(ZERO);
-        halted = runner.run(system, qks);
-        system.assertExhausted();
-        Assert.assertEquals("Q node has not returned first argument", sK, halted);
-
-        system = new AssertingSystem().shallGet(ONE);
-        halted = runner.run(system, qks);
-        system.assertExhausted();
-        Assert.assertEquals("Q node has not returned first argument", sS, halted);
+        assertHalts(qks,
+                    start().shallGet(ZERO),
+                    sK, "Q node has not returned first argument");
+        assertHalts(qks,
+                    start().shallGet(ONE),
+                    sK, "Q node has not returned second argument");
     }
 
     /**
-     * Q01K should echo one bit. This tests AsseringSystem queueing.
+     * Q01K should echo one bit. This tests AssertingSystem queueing.
      */
     @Test
     public void singleEchoTest() {
-        AssertingSystem system;  // TODO: Extract API for additinal methods not in BitSystem.
-        Q10skHlwnpoWnizedNode halted;
         final Q10skHlwnpoNode q01k = sQ.apply(s0).apply(s1).apply(sK);
-
-        system = new AssertingSystem().shallGet(ZERO).shallAccept(ZERO);
-        halted = runner.run(system, q01k);
-        system.assertExhausted();
-        Assert.assertEquals("Q01K has not returned K", sK, halted);
-
-        system = new AssertingSystem().shallGet(ONE).shallAccept(ONE);
-        halted = runner.run(system, q01k);
-        system.assertExhausted();
-        Assert.assertEquals("Q01K has not returned K", sK, halted);
+        assertHalts(q01k,
+                    start().shallGet(ZERO).shallAccept(ZERO),
+                    sK, "Q01K has not returned K");
+        assertHalts(q01k,
+                    start().shallGet(ONE).shallAccept(ONE),
+                    sK, "Q01K has not returned K");
     }
 
     /**
@@ -133,10 +126,9 @@ public class InputOutputTest {
      */
     @Test
     public void kOutputTest() {
-        final AssertingSystem system = new AssertingSystem().shallAccept(ZERO);
-        final Q10skHlwnpoWnizedNode halted = runner.run(system, sK.apply(s0).apply(s1).apply(sS));
-        system.assertExhausted();
-        Assert.assertEquals("K01S has not returned S", sS, halted);
+        assertHalts(sK.apply(s0).apply(s1).apply(sS),
+                    start().shallAccept(ZERO),
+                    sS, "K01S has not returned S");
     }
 
     /**
@@ -144,10 +136,9 @@ public class InputOutputTest {
      */
     @Test
     public void skOutputTest() {
-        final AssertingSystem system = new AssertingSystem().shallAccept(ONE);
-        final Q10skHlwnpoWnizedNode halted = runner.run(system, sS.apply(sK).apply(s0).apply(s1).apply(sS));
-        system.assertExhausted();
-        Assert.assertEquals("SK01S has not returned S", sS, halted);
+        assertHalts(sS.apply(sK).apply(s0).apply(s1).apply(sS),
+                    start().shallAccept(ONE),
+                    sS, "SK01S has not returned S");
     }
 
     /**
@@ -159,12 +150,9 @@ public class InputOutputTest {
      */
     @Test
     public void afterEffectTest() {
-        final Q10skHlwnpoNode sii = sS.apply(sI).apply(sI);
-        final Q10skHlwnpoNode program = sS.apply(sS).apply(sii).apply(s0).apply(s1).apply(sK);
-        final AssertingSystem system = new AssertingSystem().shallAccept(ZERO).shallAccept(ONE).shallAccept(ZERO).shallAccept(ZERO).shallAccept(ONE);
-        final Q10skHlwnpoWnizedNode halted = runner.run(system, program);
-        system.assertExhausted();
-        Assert.assertEquals("After effect has not returned K", sK, halted);
+        assertHalts(sS.apply(sS).apply(sii).apply(s0).apply(s1).apply(sK),
+                    start().shallAccept(ZERO).shallAccept(ONE).shallAccept(ZERO).shallAccept(ZERO).shallAccept(ONE),
+                    sK, "After effect has not returned K");
     }
 
     // TODO: Figure out how to test non-halting programs,
