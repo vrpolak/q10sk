@@ -104,7 +104,7 @@ public class InputOutputTest {
                     sK, "Q node has not returned first argument");
         assertHalts(qks,
                     start().shallGet(ONE),
-                    sK, "Q node has not returned second argument");
+                    sS, "Q node has not returned second argument");
     }
 
     /**
@@ -153,6 +153,27 @@ public class InputOutputTest {
         assertHalts(sS.apply(sS).apply(sii).apply(s0).apply(s1).apply(sK),
                     start().shallAccept(ZERO).shallAccept(ONE).shallAccept(ZERO).shallAccept(ZERO).shallAccept(ONE),
                     sK, "After effect has not returned K");
+    }
+
+    /**
+     * Boolean implication test, just to make sure input order maters.
+     */
+    @Test
+    public void booleanImplicationTest() {
+        final Q10skHlwnpoNode implication = sQ.apply(sQ.apply(s1).apply(s1)).apply(sQ.apply(s0).apply(s1)).apply(sK);
+        final String message = "Implication program has not returned K";
+        assertHalts(implication,
+                    start().shallGet(ZERO).shallGet(ZERO).shallAccept(ONE),
+                    sK, message);
+        assertHalts(implication,
+                    start().shallGet(ZERO).shallGet(ONE).shallAccept(ONE),
+                    sK, message);
+        assertHalts(implication,
+                    start().shallGet(ONE).shallGet(ZERO).shallAccept(ZERO),
+                    sK, message);
+        assertHalts(implication,
+                    start().shallGet(ONE).shallGet(ONE).shallAccept(ONE),
+                    sK, message);
     }
 
     // TODO: Figure out how to test non-halting programs,
