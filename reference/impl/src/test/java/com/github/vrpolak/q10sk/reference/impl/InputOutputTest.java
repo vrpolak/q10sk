@@ -57,7 +57,6 @@ public class InputOutputTest {
         return new AssertingSystem();
     }
 
-    // TODO: Create an API for BitSystem with assertExhausted.
     protected static void assertHalts(final Q10skHlwnpoNode initial, final AssertingSystem system, final Q10skHlwnpoNode expected, final String message) {
         final Q10skHlwnpoNode halted = runner.run(system, initial);
         system.assertExhausted();
@@ -180,6 +179,9 @@ public class InputOutputTest {
                     sK, message);
     }
 
+    /**
+     * A utility function to create larger array of combinators from smaller array.
+     */
     private ArrayDeque<Q10skHlwnpoNode> upcombine(final Collection<Q10skHlwnpoNode> base) {
         final ArrayDeque<Q10skHlwnpoNode> result = new ArrayDeque<Q10skHlwnpoNode>(base);
         for (final Q10skHlwnpoNode function : base) {
@@ -204,7 +206,7 @@ public class InputOutputTest {
         for (final Q10skHlwnpoNode item : upcombine(upcombine(food))) {
             program = program.apply(item);
         }
-        // Do not call assertHalts, because  we do not have cache to recognize equivalent hungry form of black hole.
+        // Do not call assertHalts, because we do not have cache to recognize equivalent hungry form of black hole.
         runner.run(emptySystem, program);
     }
 
