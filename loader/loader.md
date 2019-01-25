@@ -1,0 +1,93 @@
+# TODO: Add formatting.
+
+Few notes.
+
+No specific code for end of program, instead apply symbol
+acts as such when there is less than one node on stack.
+
+Implementing integers is much more work than needed.
+Instead, stack also contains "apply" implementations,
+the deepest one starting the program.
+
+For simplicity, empty programs are not allowed,
+loader always starts deserializing a leaf, before detecting apply.
+
+Two main stack layout possibilities, depending on whether
+"apply as run" is deeper than the first node.
+
+So deserialization has two phases. Apply detection and leaf deserialization.
+
+Loader program has to contain both apply implementations,
+so it is easier to have "run" at the bottom,
+and pass "inner" as an argument.
+
+Simple coding:
+' = 0
+K = 10
+S = 110
+Q = 1110
+0 = 11110
+1 = 11111
+
+Leaf decoder (without continuation):
+``QK``QS``QQ``Q01
+With continuation:
+`Lc = ``Q`cK``Q`cS``Q`cQ``Q`c0`c1
+L = ``S``S`KQ``S``SKK`KK``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1
+This assumes c contains apply implementation.
+
+Apply implementation caller, ignoring latest implementation k:
+````Ckaib = ``iab
+C = `K``S`K`S``SKKK
+Run implementation of apply:
+R = ``SKK
+Inner implementation of apply (where M is a main loop) is `im:
+M = `mm
+```imab = ``mm`ab
+i = ``S`KS``S`KK``S``SKK``SKK
+
+So main loop:
+````mnkaj = `````QC`L`inkaj
+m = ``S`K`QC``S`KLi
+m = ``S`K`Q`K``S`K`S``SKKK``S`KLi
+m = ``S`K`Q`K``S`K`S``SKKK``S`KL``S`KS``S`KK``S``SKK``SKK
+
+The initial state:
+P = `MR = ````SIImR = ````S``SKK``SKKmR = ````S``SKK``SKKm``SKK
+P = ````S``SKK``SKK``S`K`Q`K``S`K`S``SKKK``S`KL``S`KS``S`KK``S``SKK``SKK``SKK
+P = ````S``SKK``SKK``S`K`Q`K``S`K`S``SKKK``S`K``S``S`KQ``S``SKK`KK``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S`KS``S`KK``S``SKK``SKK``SKK
+
+Now, header considerations. As multiple encodings are possible, we want to include the loader program to show which encoding is used.
+But it could be unclear where the loader ends, so we prepend loader twice.
+For that to correctly specify the loader, its encoding should not contain two repeated segments at the start.
+As our loader loads from argument side, current code with ``SKK will not work.
+Fortunately, that is I and it can be also written as ``SKS.
+But current code for S is 110 which repeats 1.
+We need to flip (at least) the second bit:
+' = 0
+K = 11
+S = 100
+Q = 1010
+0 = 10110
+1 = 10111
+
+Leaf decoder changes. Without continuation:
+``Q``QS``QQ``Q01K
+Basically just K moves to the end. Now with continuation:
+`Lc = ``Q``Q`cS``Q`cQ``Q`c0`c1`cK
+L = ``S``S`KQ``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S``SKK`KK
+
+New loader:
+P = ````S``SKK``SKK``S`K`Q`K``S`K`S``SKKK``S`KL``S`KS``S`KK``S``SKK``SKK``SKS
+P = ````S``SKK``SKK``S`K`Q`K``S`K`S``SKKK``S`K``S``S`KQ``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S``SKK`KK``S`KS``S`KK``S``SKK``SKK``SKS
+
+Serialized (single copy):
+100111000011111000011111000010000111101000010011010000111101111100001000010111110111110000100001011011011111000010000101011010000100001010110111110000100001010110100001000010011011111000010000101011010000100001010110100001000011010000111111100001000110100001101010011010000111110000111110000100000
+(297 bits, fits into 38 bytes, two copies into 75.)
+
+As expected, ``SKS from the end never repeats in reasonable programs, but "10011100" of course can appear in binary imput of the said program.
+The loader does not even contain another copy of "100111".
+
+# TODO: Turn all of the above into a coherent text document.
+
+# TODO: Add tests to confirm the loader works as intended.
