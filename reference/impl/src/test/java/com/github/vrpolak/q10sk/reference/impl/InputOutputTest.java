@@ -49,7 +49,7 @@ public class InputOutputTest {
     private static final Q10skHlwnpoNode sQ = wiring.getQNode();
     private static final Q10skHlwnpoNode sS = wiring.getSNode();
     private static final Q10skHlwnpoNode sI = sS.apply(sK).apply(sK);
-    private static final Q10skHlwnpoNode sii = sS.apply(sI).apply(sI);
+    private static final Q10skHlwnpoNode sSII = sS.apply(sI).apply(sI);
     private static final AssertingSystem emptySystem = start();
     private static final Q10skHlwnpoRunner runner = new SimpleRunner();
 
@@ -153,7 +153,7 @@ public class InputOutputTest {
      */
     @Test
     public void afterEffectTest() {
-        assertHalts(sS.apply(sS).apply(sii).apply(s0).apply(s1).apply(sK),
+        assertHalts(sS.apply(sS).apply(sSII).apply(s0).apply(s1).apply(sK),
                     start().shallAccept(ZERO).shallAccept(ONE).shallAccept(ZERO).shallAccept(ZERO).shallAccept(ONE),
                     sK, "After effect has not returned K");
     }
@@ -199,10 +199,10 @@ public class InputOutputTest {
      */
     @Test
     public void blackHoleTest() {
-        final Q10skHlwnpoNode halfHole = sS.apply(sK.apply(sK)).apply(sii);
-        final List<Q10skHlwnpoNode> food = Arrays.asList(s0, s1, sK, sQ, sS, sI, sii, sS.apply(sK), sS.apply(sS));
+        final Q10skHlwnpoNode halfHole = sS.apply(sK.apply(sK)).apply(sSII);
+        final List<Q10skHlwnpoNode> food = Arrays.asList(s0, s1, sK, sQ, sS, sI, sSII, sS.apply(sK), sS.apply(sS));
         // Adding more items to food would lead to StackOverflow with double upcombining.
-        Q10skHlwnpoNode program = sii.apply(halfHole);
+        Q10skHlwnpoNode program = sSII.apply(halfHole);
         for (final Q10skHlwnpoNode item : upcombine(upcombine(food))) {
             program = program.apply(item);
         }
