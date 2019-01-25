@@ -5,6 +5,9 @@ import sys
 class Node(object):
 
     def __call__(self, argument):
+        if self == K and argument == I:
+            print "`KI -> `SK"
+            return S(K)
         return Inner(self, argument)
 
 
@@ -15,6 +18,12 @@ class Leaf(Node):
 
     def __str__(self):
         return self.letter
+
+    def __eq__(self, other):
+        return isinstance(other, Leaf) and self.letter == other.letter
+
+    def __ne__(self, other):
+        return not self == other
 
     def contains(self, leaf):
         return leaf.letter == self.letter
@@ -43,6 +52,12 @@ class Inner(Node):
 
     def __str__(self):
         return '`' + str(self.function) + str(self.argument)
+
+    def __eq__(self, other):
+        return isinstance(other, Inner) and self.function == other.function and self.argument == other.argument
+
+    def __ne__(self, other):
+        return not self == other
 
     def lhs_x(self):
         if isinstance(self.argument, Leaf):
@@ -74,7 +89,7 @@ SII = S(I)(I)
 
 
 def valid_char(char):
-    return char in "`KSabcdefghijklmnopqrtsuvwxyz"
+    return char.lower() in "`01abcdefghijklmnopqrtsuvwxyz"
 
 
 def parse_hand(orig_text):
@@ -88,7 +103,7 @@ def parse_hand(orig_text):
         if not valid_char(char):
             continue
         if char == '`':
-            combined = Inner(stack[-1], stack[-2])
+            combined = stack[-1](stack[-2])
             del stack[-1]
             stack[-1] = combined
         elif char == 'K':
