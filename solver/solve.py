@@ -5,9 +5,13 @@ import sys
 class Node(object):
 
     def __call__(self, argument):
+        if self == SK and argument != K:
+            print "`SK with nonstandard argument", argument
         if self == K and argument == I:
             print "`KI -> `SK"
-            return S(K)
+            return SK
+        if self == I:
+            return argument
         return Inner(self, argument)
 
 
@@ -84,7 +88,9 @@ class Inner(Node):
         return S(self.function.extracted(leaf))(self.argument.extracted(leaf))
 
 
-I = S(K)(K)
+# Avoid __call__ which need these two defined.
+SK = Inner(S, K)
+I = Inner(SK, K)
 SII = S(I)(I)
 
 
