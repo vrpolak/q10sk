@@ -60,6 +60,7 @@
                     <configuration>
                         <argLine>-Xmx512m</argLine>
                         <trimStackTrace>false</trimStackTrace>
+                        <useSystemClassLoader>false</useSystemClassLoader>
                     </configuration>
                 </plugin>
             </plugins>
