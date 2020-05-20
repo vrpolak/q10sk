@@ -3,7 +3,7 @@
 Few notes.
 
 No specific code for end of program, instead apply symbol
-acts as such when there is less than one node on stack.
+acts as such when there is not enough argument for the current combinator.
 
 Implementing integers is much more work than needed.
 Instead, stack also contains "apply" implementations,
