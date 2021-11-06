@@ -1,14 +1,29 @@
+# Project q10sk, a minimalistic model of computation.
+# Copyright (C) 2017  Vratko Polak
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 
+# TODO: Add docstrings.
 
 class Node(object):
 
     def __call__(self, argument):
         if self == SK and argument != K:
-            print "`SK with nonstandard argument", argument
+            print(f"`SK with nonstandard argument: {argument}")
         if self == K and argument == I:
-            print "`KI -> `SK"
+            print("`KI -> `SK")
             return SK
         if self == I:
             return argument
@@ -120,8 +135,7 @@ def parse_hand(orig_text):
             stack.append(Leaf(char))
     stack_size = len(stack)
     if stack_size != 1:
-        print "stack size", stack_size, "orig", orig_text
-        sys.exit(1)
+        raise RuntimeError(f"stack size {stack_size}, orig {orig_text}")
     return stack[0], text
 
 
@@ -135,8 +149,7 @@ def parse_string(orig_text):
 def solve(lhs, rhs):
     x = lhs.lhs_x()
     if not x:
-        print "lhs not canonic", str(lhs)
-        sys.exit(1)
+        raise RuntimeError(f"lhs not canonic: {lhs}")
     while not isinstance(lhs, Leaf):
         arg = lhs.argument
         lhs = lhs.extracted(arg)
@@ -155,11 +168,10 @@ def main():
     with open("solve.in") as fi:
         text = fi.read()
     lhs, rhs = parse_string(text)
+    x = lhs.lhs_x()
+    if not x:
+        raise RuntimeError(f"left hand side not in canonic form: {lhs}")
     with open("solve.out", "w") as fo:
-        x = lhs.lhs_x()
-        if not x:
-            print "left hand side not in canonic form", str(lhs)
-            sys.exit(1)
         fo.write(lhs.lhs_x().letter + " = ")
         fo.write(str(solve(lhs, rhs)))
         fo.write('\n')
