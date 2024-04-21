@@ -15,11 +15,26 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# TODO: Add docstrings.
+"""
+This script is a solver for implicitly defined combinators,
+useful for programming in q10sk project, a minimalistic model of computation.
+
+This scipt parses an input file, solves the problem, and writes the solution to an output file.
+The input contains an equation, both sides in unlambda format.
+The left hand side must be in form of an unknown function applied to several arguments.
+The symbols for the function and arguments mus be unique and different from Q, 1, 0, S, K.
+The right hand side than contains arbitrary expression
+with any number of copies of left hand side symbols and Q, 1, 0, S, K symbols.
+The solution is also an equation, but with left hand side being only the unknown function
+and the right hand side is an expression containing only Q, 1, 0, S, K symbols.
+"""
+
 
 class Node(object):
+    """Base class for nodes in the computation tree."""
 
     def __call__(self, argument):
+        """Apply this node to an argument."""
         if self == SK and argument != K:
             print(f"`SK with nonstandard argument: {argument}")
         if self == K and argument == I:
@@ -31,29 +46,41 @@ class Node(object):
 
 
 class Leaf(Node):
+    """Represents a leaf node in the computation tree."""
 
     def __init__(self, letter):
+        """ Initialize a leaf node with a given letter."""
         self.letter = letter
 
     def __str__(self):
+        """Return a string representation of the leaf node."""
         return self.letter
 
     def __eq__(self, other):
+        """Check if this leaf node is equal to another node."""
         return isinstance(other, Leaf) and self.letter == other.letter
 
     def __ne__(self, other):
+        """Check if this leaf node is not equal to another node."""
         return not self == other
 
     def contains(self, leaf):
+        """Check if this leaf node contains another leaf.
+
+        For leaves this is the same as equality,
+        but is it useful to have same method as inner nodes.
+        """
         return leaf.letter == self.letter
 
     def extracted(self, leaf):
+        """Extract the specified leaf from this leaf node."""
         if self.contains(leaf):
             return I
         else:
             return K(self)
 
     def lhs_x(self):
+        """If left hand side parsing arrives here, this is the leaf for the unknown function."""
         return self
 
 
@@ -62,39 +89,50 @@ S = Leaf('S')
 
 
 class Inner(Node):
+    """Represents an inner node in the computation tree."""
 
     def __init__(self, function, argument):
+        """Initialize an inner node with a function and an argument."""
         self.function = function
         self.argument = argument
         self.searched = ''
         self.found = True
 
     def __str__(self):
+        """Return a string representation of the inner node."""
         return '`' + str(self.function) + str(self.argument)
 
     def __eq__(self, other):
+        """Check if this inner node is equal to another node."""
         return isinstance(other, Inner) and self.function == other.function and self.argument == other.argument
 
     def __ne__(self, other):
+        """Check if this inner node is not equal to another node."""
         return not self == other
 
     def lhs_x(self):
+        """Return the unknown function leaf, None if left hand side is not valid."""
         if isinstance(self.argument, Leaf):
             x = self.function.lhs_x()
             if not x:
                 return None
-            if self.argument.letter != x.letter:
-                return x
+            if self.argument.letter == x.letter:
+                return None
+            if self.argument.letter in "Q10SK" or x.letter in "Q10SK":
+                return None
+            return x
         return None
 
     def contains(self, leaf):
+        """Check if this inner node contains a given leaf."""
         if self.searched == leaf.letter:
             return self.found
-        self.searched = leaf.letter
         self.found = self.argument.contains(leaf) or self.function.contains(leaf)
+        self.searched = leaf.letter
         return self.found
 
     def extracted(self, leaf):
+        """Extract a leaf from this inner node."""
         if not self.contains(leaf):
             return K(self)
         if not self.function.contains(leaf):
@@ -110,10 +148,15 @@ SII = S(I)(I)
 
 
 def valid_char(char):
+    """Check if a given character is valid."""
     return char.lower() in "`01abcdefghijklmnopqrtsuvwxyz"
 
 
 def parse_hand(orig_text):
+    """Parse one hand side from a given text.
+
+    This is a common block for parsing both left and right hand side.
+    """
     text = str(orig_text)
     stack = []
     while len(text) > 0:
@@ -140,16 +183,21 @@ def parse_hand(orig_text):
 
 
 def parse_string(orig_text):
+    """Parse a string into left-hand side and right-hand side nodes."""
     text = str(orig_text)
     rhs, text = parse_hand(text)
     lhs, text = parse_hand(text)
     return lhs, rhs
 
 
-def solve(lhs, rhs):
-    x = lhs.lhs_x()
-    if not x:
-        raise RuntimeError(f"lhs not canonic: {lhs}")
+def solve(lhs, rhs, x):
+    """Solve the problem given the left-hand side and right-hand side nodes.
+
+    Arguments are extracted and eliminated one by one.
+    If the resulting right hand side still refers to the unknown function,
+    the unknown function is extracted, and the remaining combinator F
+    is used to contruct an explicit solution.
+    """
     while not isinstance(lhs, Leaf):
         arg = lhs.argument
         lhs = lhs.extracted(arg)
@@ -165,16 +213,18 @@ def solve(lhs, rhs):
 
 
 def main():
+    """Main function that reads the input file, solves the problem, and writes the solution to the output file."""
     with open("solve.in") as fi:
         text = fi.read()
     lhs, rhs = parse_string(text)
     x = lhs.lhs_x()
     if not x:
-        raise RuntimeError(f"left hand side not in canonic form: {lhs}")
+        raise RuntimeError(f"lhs not canonic: {lhs}")
     with open("solve.out", "w") as fo:
-        fo.write(lhs.lhs_x().letter + " = ")
-        fo.write(str(solve(lhs, rhs)))
+        fo.write(x.letter + " = ")
+        fo.write(str(solve(lhs, rhs, x)))
         fo.write('\n')
+
 
 if __name__ == "__main__":
     main()
