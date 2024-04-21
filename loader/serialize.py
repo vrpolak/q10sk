@@ -9,10 +9,16 @@ dictionary = {
 }
 
 with open("serialize.in") as fi:
-    text = fi.read()
+    txt = fi.read()
 
 with open("serialize.out", "w") as fo:
-    while len(text) > 1:
-        char = text[-1]
-        text = text[:-1]
+    text = txt[:]
+    while text:
+        *text, char = text
+        fo.write(dictionary.get(char, ""))
+
+with open("inverse.out", "w") as fo:
+    text = txt[:]
+    while text:
+        char, *text = text
         fo.write(dictionary.get(char, ""))
