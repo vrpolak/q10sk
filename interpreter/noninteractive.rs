@@ -2,12 +2,82 @@ use std::env;
 use std::fs::File;
 use std::io::{self, BufRead, Write};
 use std::rc::Rc;
-use std::str::FromStr;
+//use std::str::FromStr;
 
-// canon const: LOADER: &str = "100111000011111000011111000010000111101000010011010000111101111100001000010111110111110000100001011011011111000010000101011010000100001010110111110000100001010110100001000010011011111000010000101011010000100001010110100001000011010000111111100001000110100001101010011010000111110000111110000100000";
-// stupid inverse: const LOADER: &str = "000001000011111000011111000010110010101100001011000100001111111000010110000100001011010100001000010110101000010000111110110010000100001011010100001000011111011010100001000010110101000010000111110110110100001000011111011111010000100001111101111000010110010000101111000010000111110000111110000111001";
-// inverse still one tick less: const LOADER: &str = "000100001001111001001111001000110101001100100011010000100111111001000110010000100011101000100001000111010001000010011110111000010000100011101000100001001111011101000100001000111010001000010011110111011000100001001111011101110010000100111101111001000111000010001111001000010011110010011110010011100";
-const LOADER: &str = "0000100001001111001001111001000110101001100100011010000100111111001000110010000100011101000100001000111010001000010011110111000010000100011101000100001001111011101000100001000111010001000010011110111011000100001001111011101110010000100111101111001000111000010001111001000010011110010011110010011100";
+// i
+//const LOADER: &str = "0010000100011100001000111100100011100001000110100011100001000110100011110010000100111100100111101111";
+// C
+//const LOADER: &str = "0010001111001000010001110000100011010001110000100001000111000010001111001000111000010001101000010011111101111011010011";
+// L
+//const LOADER: &str = "0010000100011101000100001000111010001000010011110111000010000100011101000100001001111011101000100001000111010001000010011110111011000100001001111011101110010000100111101111";
+// m
+//const LOADER: &str = "00100001000111010001000111100100001000111000010001101000111000010000100011100001000111100100011100001000110100001001111110111101101001100100011001000010001110100010000100011101000100001001111011100001000010001110100010000100111101110100010000100011101000100001001111011101100010000100111101110111001000010011110111100100001000010011110010011110110010000100011100001000111100100011100001000110100011100001000110100011110010000100111100100111101111";
+// P
+const LOADER: &str = "0000100001001111001001111001000010001110100010001111001000010001110000100011010001110000100001000111000010001111001000111000010001101000010011111101111011010011001000110010000100011101000100001000111010001000010011110111000010000100011101000100001001111011101000100001000111010001000010011110111011000100001001111011101110010000100111101111001000010000100111100100111101100100001000111000010001111001000111000010001101000111000010001101000111100100001001111001001111011110110010011100";
+
+fn substitute_i(input: String) -> String {
+    let pattern = "Sxy(Sxy(Kx(S), Sxy(Kx(K), Sxy(Kx(S), Sxy(Kx(Sx(Kx(S))), Sxy(Kx(Sx(Kx(K))), Sxy(Sxy(K, K), Sxy(K, K))))))), Kx(K))";
+    let mut output = String::new();
+    let mut start = 0;
+
+    while let Some(pos) = input[start..].find(pattern) {
+        output.push_str(&input[start..start + pos]);
+        output.push('i');
+        start += pos + pattern.len();
+    }
+
+    output.push_str(&input[start..]);
+    output
+}
+
+fn substitute_c(input: String) -> String {
+    let pattern = "Sxy(Kx(K), Sxy(Sxy(Kx(S), Sxy(Kx(Sx(Kx(S))), Sxy(Sxy(Kx(S), Sxy(Kx(K), Sxy(Kx(S), Sxy(Kx(Sx(Sxy(K, K))), K)))), Kx(K)))), Kx(Sx(K))))";
+    let mut output = String::new();
+    let mut start = 0;
+
+    while let Some(pos) = input[start..].find(pattern) {
+        output.push_str(&input[start..start + pos]);
+        output.push('C');
+        start += pos + pattern.len();
+    }
+
+    output.push_str(&input[start..]);
+    output
+}
+
+fn substitute_l(input: String) -> String {
+    let pattern = "Sxy(Sxy(Kx(Q), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(S))), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(Q))), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(Zero))), Sxy(Sxy(K, K), Kx(One)))))), Sxy(Sxy(K, K), Kx(K)))";
+    let mut output = String::new();
+    let mut start = 0;
+
+    while let Some(pos) = input[start..].find(pattern) {
+        output.push_str(&input[start..start + pos]);
+        output.push('L');
+        start += pos + pattern.len();
+    }
+
+    output.push_str(&input[start..]);
+    output
+}
+
+fn substitute_m(input: String) -> String {
+    let pattern = "Sxy(Sxy(Kx(Q), C), Sxy(Kx(L), Sxy(Sxy(Sxy(K, K), Sxy(K, K)), Kx(i))))";
+    let mut output = String::new();
+    let mut start = 0;
+
+    while let Some(pos) = input[start..].find(pattern) {
+        output.push_str(&input[start..start + pos]);
+        output.push('m');
+        start += pos + pattern.len();
+    }
+
+    output.push_str(&input[start..]);
+    output
+}
+
+fn substitute_all(input: String) -> String {
+    substitute_m(substitute_l(substitute_c(substitute_i(input))))
+}
 
 #[derive(Debug)]
 enum Node {
@@ -29,6 +99,7 @@ enum Node {
 
 impl Node {
     fn rc_apply(rc_self: Rc<Node>, other: Rc<Node>) -> Rc<Node> {
+        // This also performs half-lazy evaluation.
         match &*rc_self {
             Node::K => Rc::new(Node::Kx(Rc::clone(&other))),
             Node::Kx(x) => Rc::clone(&x),
@@ -47,8 +118,9 @@ impl Node {
     }
 
     fn one_step_normalize(rc_self: Rc<Node>) -> Option<Rc<Node>> {
-        println!("starting normalization of {:?}", &rc_self);
+//        println!("starting normalization of {:?}", &rc_self);
         let result = match &*rc_self {
+            // This performs one step towards full normalization, but no I/O.
             Node::Sxyz(x, y, z) => Some(Node::rc_apply(Node::rc_apply(Rc::clone(&x), Rc::clone(&z)), Node::rc_apply(Rc::clone(&y), Rc::clone(&z)))),
             Node::Apply(f, x) => match Node::one_step_normalize(Rc::clone(&f)) {
                 Some(nf) => Some(Node::rc_apply(nf, Rc::clone(&x))),
@@ -56,7 +128,7 @@ impl Node {
             }
             _ => None,
         };
-        println!("normalization ended with {:?}", &result);
+//        println!("normalization ended with {:?}", &result);
         result
     }
 
@@ -176,12 +248,12 @@ fn main() {
 
     let mut output_bits = Vec::new();
 
-    println!("starting state {:?}", &state);
+    println!("starting state {:?}", &substitute_all(format!("{:?}", &state)));
     for _ in 0..max_steps {
         let maybe_new_state = Node::one_step_normalize(Rc::clone(&state));
         if maybe_new_state.is_some() {
             state = maybe_new_state.unwrap();
-            println!("new state no io: {:?}\n", &state);
+            println!("new state no io: {:?}\n", &substitute_all(format!("{:?}", &state)));
             continue
         }
         println!("old state is io or halt.");
@@ -211,7 +283,7 @@ fn main() {
                 panic!("Halted")
             },
         };
-        println!("new state after io: {:?}", &state);
+        println!("new state after io: {:?}", &substitute_all(format!("{:?}", &state)));
     }
     println!("iteration limit reached.");
 
