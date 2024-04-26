@@ -4,46 +4,18 @@ use std::io::{self, BufRead, Write};
 use std::rc::Rc;
 //use std::str::FromStr;
 
-// i
-//const LOADER: &str = "0010000100011100001000111100100011100001000110100011100001000110100011110010000100111100100111101111";
-// C
-//const LOADER: &str = "0010001111001000010001110000100011010001110000100001000111000010001111001000111000010001101000010011111101111011010011";
 // L
 //const LOADER: &str = "0010000100011101000100001000111010001000010011110111000010000100011101000100001001111011101000100001000111010001000010011110111011000100001001111011101110010000100111101111";
+// i
+//const LOADER: &str = "001000110100011110010001110000100011110010000100111101111";
+// C
+//const LOADER: &str = "0010001111001000010001110000100011010001110000100001000111000010001111001000111000010001101000010000100001001111011001000110100011110010001110000100011110010000100111101111011011111101111011010011";
 // m
-//const LOADER: &str = "00100001000111010001000111100100001000111000010001101000111000010000100011100001000111100100011100001000110100001001111110111101101001100100011001000010001110100010000100011101000100001001111011100001000010001110100010000100111101110100010000100011101000100001001111011101100010000100111101110111001000010011110111100100001000010011110010011110110010000100011100001000111100100011100001000110100011100001000110100011110010000100111100100111101111";
+//const LOADER: &str = "0010000100011101000100011001000111100100001000111000010001101000111000010000100011100001000111100100011100001000110100001000010000100111101100100011010001111001000111000010001111001000010011110111101101111110111101101001100100001001111001001111001000110010000100011101000100001000111010001000010011110111000010000100011101000100001001111011101000100001000111010001000010011110111011000100001001111011101110010000100111101111001000010000100111100100111101111";
+// M
+//const LOADER: &str = "0001000010011110010011110010000100011101000100011001000111100100001000111000010001101000111000010000100011100001000111100100011100001000110100001000010000100111101100100011010001111001000111000010001111001000010011110111101101111110111101101001100100001001111001001111001000110010000100011101000100001000111010001000010011110111000010000100011101000100001001111011101000100001000111010001000010011110111011000100001001111011101110010000100111101111001000010000100111100100111101111";
 // P
-const LOADER: &str = "0000100001001111001001111001000010001110100010001111001000010001110000100011010001110000100001000111000010001111001000111000010001101000010011111101111011010011001000110010000100011101000100001000111010001000010011110111000010000100011101000100001001111011101000100001000111010001000010011110111011000100001001111011101110010000100111101111001000010000100111100100111101100100001000111000010001111001000111000010001101000111000010001101000111100100001001111001001111011110110010011100";
-
-fn substitute_i(input: String) -> String {
-    let pattern = "Sxy(Sxy(Kx(S), Sxy(Kx(K), Sxy(Kx(S), Sxy(Kx(Sx(Kx(S))), Sxy(Kx(Sx(Kx(K))), Sxy(Sxy(K, K), Sxy(K, K))))))), Kx(K))";
-    let mut output = String::new();
-    let mut start = 0;
-
-    while let Some(pos) = input[start..].find(pattern) {
-        output.push_str(&input[start..start + pos]);
-        output.push('i');
-        start += pos + pattern.len();
-    }
-
-    output.push_str(&input[start..]);
-    output
-}
-
-fn substitute_c(input: String) -> String {
-    let pattern = "Sxy(Kx(K), Sxy(Sxy(Kx(S), Sxy(Kx(Sx(Kx(S))), Sxy(Sxy(Kx(S), Sxy(Kx(K), Sxy(Kx(S), Sxy(Kx(Sx(Sxy(K, K))), K)))), Kx(K)))), Kx(Sx(K))))";
-    let mut output = String::new();
-    let mut start = 0;
-
-    while let Some(pos) = input[start..].find(pattern) {
-        output.push_str(&input[start..start + pos]);
-        output.push('C');
-        start += pos + pattern.len();
-    }
-
-    output.push_str(&input[start..]);
-    output
-}
+const LOADER: &str = "000010000100111100100111100100001000111010001000110010001111001000010001110000100011010001110000100001000111000010001111001000111000010001101000010000100001001111011001000110100011110010001110000100011110010000100111101111011011111101111011010011001000010011110010011110010001100100001000111010001000010001110100010000100111101110000100001000111010001000010011110111010001000010001110100010000100111101110110001000010011110111011100100001001111011110010000100001001111001001111011110110010011100";
 
 fn substitute_l(input: String) -> String {
     let pattern = "Sxy(Sxy(Kx(Q), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(S))), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(Q))), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(Zero))), Sxy(Sxy(K, K), Kx(One)))))), Sxy(Sxy(K, K), Kx(K)))";
@@ -60,8 +32,38 @@ fn substitute_l(input: String) -> String {
     output
 }
 
+fn substitute_i(input: String) -> String {
+    let pattern = "Sxy(Kx(Sx(Kx(K))), Sxy(Kx(S), Sxy(Kx(K), Sxy(Sxy(K, K), Kx(K)))))";
+    let mut output = String::new();
+    let mut start = 0;
+
+    while let Some(pos) = input[start..].find(pattern) {
+        output.push_str(&input[start..start + pos]);
+        output.push('i');
+        start += pos + pattern.len();
+    }
+
+    output.push_str(&input[start..]);
+    output
+}
+
+fn substitute_c(input: String) -> String {
+    let pattern = "Sxy(Kx(K), Sxy(Sxy(Kx(S), Sxy(Kx(Sx(Kx(S))), Sxy(Sxy(Kx(S), Sxy(Kx(K), Sxy(Kx(S), Sxy(Kx(Sx(Sxy(Sxy(Sxy(K, K), Kx(i)), Kx(Kx(K))))), K)))), Kx(K)))), Kx(Sx(K))))";
+    let mut output = String::new();
+    let mut start = 0;
+
+    while let Some(pos) = input[start..].find(pattern) {
+        output.push_str(&input[start..start + pos]);
+        output.push('C');
+        start += pos + pattern.len();
+    }
+
+    output.push_str(&input[start..]);
+    output
+}
+
 fn substitute_m(input: String) -> String {
-    let pattern = "Sxy(Sxy(Kx(Q), C), Sxy(Kx(L), Sxy(Sxy(Sxy(K, K), Sxy(K, K)), Kx(i))))";
+    let pattern = "Sxy(Sxy(Kx(Q), Sxy(Kx(C), Sxy(Sxy(K, K), Sxy(K, K)))), Sxy(Kx(L), Sxy(Sxy(Sxy(K, K), Sxy(K, K)), Kx(K))))";
     let mut output = String::new();
     let mut start = 0;
 
@@ -75,8 +77,23 @@ fn substitute_m(input: String) -> String {
     output
 }
 
+fn substitute_mm(input: String) -> String {
+    let pattern = "Sxyz(Sxy(K, K), Sxy(K, K), m)";
+    let mut output = String::new();
+    let mut start = 0;
+
+    while let Some(pos) = input[start..].find(pattern) {
+        output.push_str(&input[start..start + pos]);
+        output.push('M');
+        start += pos + pattern.len();
+    }
+
+    output.push_str(&input[start..]);
+    output
+}
+
 fn substitute_all(input: String) -> String {
-    substitute_m(substitute_l(substitute_c(substitute_i(input))))
+    substitute_mm(substitute_m(substitute_c(substitute_i(substitute_l(input)))))
 }
 
 #[derive(Debug)]

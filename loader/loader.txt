@@ -11,10 +11,9 @@ the deepest one starting the program.
 
 Supporting empty programs makes the loader more complicated,
 but also makes the serialized programs less surprising.
-
-Two main stack layout possibilities, depending on whether
-"backtick as run" is deeper than the first node.
-To support empty programs, it is better if it is.
+As a compromise, the program serialization will work
+as if empty programs are supported,
+even if loader halts in a different way on empty program.
 
 Deserialization has two phases. Backtick detection and leaf deserialization.
 
@@ -24,6 +23,15 @@ and pass "combine" as an argument.
 Every time a leaf is deselialized,
 the combine backtick implementation is then added to the stack.
 From bottom of stack: backtick_run, fist_item, backtick_combine, second item, ...
+
+As the stack will be deep for long programs,
+it is best to keep the backtick items as lightweight as possible,
+and the lightest is the switch. K for combine `SK = `K`SKS = `K``SKS for run.
+
+There will be a main loop, programmed a M=`mm so m can be used to construct new M.
+As turning m into M needs a long combinator,
+it is best to be applied as soon as possible,
+even at the cost of taking more memory.
 
 For leaf encoding, a less than obvious schema is used
 (the benefit will be visible later):
@@ -39,64 +47,61 @@ Leaf decoder (without continuation): {``Q(a)[b]}
 With continuation:
 `Lc = {``Q({``Q(`cS)[{``Q(`cQ)[{``Q(`c0)[`c1]}]]})[`cK]}
 `Lc = ``Q``Q`cS``Q`cQ``Q`c0`c1`cK
-`Lc = ``Q``Q`cS``Q`cQ``Q`c0`c1`cK
 L = ``S``S`KQ``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S``SKK`KK
-This assumes c contains backtick_combine implementation.
 
-It is better to have the next loop only towards the top of the stack.
-In that case, Backtick implementation caller is:
-(remember there should always be i/j between `ab and `nn,
- but we allow no impl between `jn and a)
-`````Cnkajb = ````jnajb
-````Cnkaj = ```jnaj
-C = ``S`KK``S``S`KS``S`K`S`KS``S``S`KS``S`KK``S`KS``S`K`S``SKKK`KK`K`SK
+For data layout, most of the time there should always be i/j/k between a/b and M,
+The exception to this rule is backtick implementation caller,
+as both implementation ignore the toppest impl.
+If "i" is the real combine function, "r" the run function and "j" the selector, we have:
+`````CMkajb = ``````jirMajb
+````CMkaj = `````jirMaj
+C = ``S`KK``S``S`KS``S`K`S`KS``S``S`KS``S`KK``S`KS``S`K`S``S``S``SKK`Ki`KrK`KK`K`SK
 
-Inner implementation of apply (where M is a main loop) is `im:
-M = `mm
-````inajb = ```nnj`ab
-i = ``S``S`KS``S`KK``S`KS``S`K`S`KS``S`K`S`KK``S``SKK``SKK`KK
+Real combine implementation of backtick:
+````iMajb = ``MK`ab
+i = ``S`K`S`KK``S`KS``S`KK``S``SKK`KK
 
-So main loop:
-````mnkaj = `````Q`Cn`L``nnikaj
-````mnkaj = `````Q`Cn`L````S``SKK``SKKnikaj
-`mn = ``Q`Cn`L``nni
-`mn = ``Q`Cn`L````S``SKK``SKKni
-m = ``S``S`KQC``S`KL``S``S``SKK``SKK`Ki
-Substitute...
-m = ``S``S`KQC``S`KL``S``S``SKK``SKK`K``S``S`KS``S`KK``S`KS``S`K`S`KS``S`K`S`KK``S``SKK``SKK`KK
-m = ``S``S`KQC``S`K``S``S`KQ``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S``SKK`KK``S``S``SKK``SKK`K``S``S`KS``S`KK``S`KS``S`K`S`KS``S`K`S`KK``S``SKK``SKK`KK
-m = ``S``S`KQ``S`KK``S``S`KS``S`K`S`KS``S``S`KS``S`KK``S`KS``S`K`S``SKKK`KK`K`SK``S`K``S``S`KQ``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S``SKK`KK``S``S``SKK``SKK`K``S``S`KS``S`KK``S`KS``S`K`S`KS``S`K`S`KK``S``SKK``SKK`KK
+Real run implementation needs to be:
+```rMaR = a
+r = `KK
 
-Now, runner (bottom item, "j" so far) needs to be:
-``rna = a
-r = `SK
+For debugs substituted all:
+C = ``S`KK``S``S`KS``S`K`S`KS``S``S`KS``S`KK``S`KS``S`K`S``S``S``SKK`Ki`KrK`KK`K`SK
+C = ``S`KK``S``S`KS``S`K`S`KS``S``S`KS``S`KK``S`KS``S`K`S``S``S``SKK`Ki`K`KKK`KK`K`SK
+C = ``S`KK``S``S`KS``S`K`S`KS``S``S`KS``S`KK``S`KS``S`K`S``S``S``SKK`K``S`K`S`KK``S`KS``S`KK``S``SKK`KK`K`KKK`KK`K`SK
 
-The initial state as a "SK" program:
-p = `Mr = ````SIImr = ````S``SKK``SKKmr = ````S``SKK``SKKm`SK
-p = ````S``SKK``SKK``S``S`KQC``S`KL``S``S``SKK``SKK`Ki`SK
-p = ````S``SKK``SKK``S``S`KQC``S`KL``S``S``SKK``SKK`K``S`KS``S`KK``S``SKK``SKK`SK
-p = ````S``SKK``SKK``S``S`KQ``S`KK``S``S`KS``S`KK``S`KS``S`K`S``SKKK`KK``S`K``S``S`KQ``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S``SKK`KK``S``S``SKK``SKK`K``S`KS``S`KK``S``SKK``SKK`SK
+The main loop:
+````mnkaj = `````Q`C`nn`L``nnKkaj
+```mnka = ````Q`C`nn`L``nnKka
+``mnk = ```Q`C`nn`L``nnKk
+`mn = ``Q`C`nn`L``nnK
+m = ``S``S`KQ``S`KC``S``SKK``SKK``S`KL``S``S``SKK``SKK`KK
+
+For debugs substituted all:
+m = ``S``S`KQ``S`KC``S``SKK``SKK``S`KL``S``S``SKK``SKK`KK
+m = ``S``S`KQ``S`KC``S``SKK``SKK``S`K``S``S`KQ``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S``SKK`KK``S``S``SKK``SKK`KK
+m = ``S``S`KQ``S`K``S`KK``S``S`KS``S`K`S`KS``S``S`KS``S`KK``S`KS``S`K`S``S``S``SKK`K``S`K`S`KK``S`KS``S`KK``S``SKK`KK`K`KKK`KK`K`SK``S``SKK``SKK``S`K``S``S`KQ``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S``SKK`KK``S``S``SKK``SKK`KK
+
+M = `mm = ```SIIm
+M = ```S``SKK``SKKm
+M = ```S``SKK``SKK``S``S`KQ``S`K``S`KK``S``S`KS``S`K`S`KS``S``S`KS``S`KK``S`KS``S`K`S``S``S``SKK`K``S`K`S`KK``S`KS``S`KK``S``SKK`KK`K`KKK`KK`K`SK``S``SKK``SKK``S`K``S``S`KQ``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S``SKK`KK``S``S``SKK``SKK`KK
 
 Now, header considerations. As multiple encodings are possible, we want to include the loader program to show which encoding is used.
 But it could be unclear where the loader ends, so we prepend loader twice.
 For that to correctly specify the loader, its encoding should not contain two repeated segments at the start.
-As our loader loads from argument side, current code with `SK does not work,
+As our loader loads from argument side, current code with `SK as run switch does not work,
 and it will not easily work with any "one-bit `, two-bit K" scheme.
 We can cheat by realizing `SK is `KI and using ``SKS instead of ``SKK for I:
 R := `KI = `K``SKS
 ``Rna = ``(`K``SKS)na = `(``K ``SKS n)a = `(``SKS)a = ``Ka`Sa = a
-As our loader loads from argument side, current code with ``SKK would not work.
 In the straigthforward encodng scheme, code for S would be 110 which repeats 1.
 And that explains why we flipped that bit to encode S as 100.
-P = `MR = ````S``SKK``SKKm`K``SKS
-P = ````S``SKK``SKKm`K``SKS
-P = ````S``SKK``SKK``S``S`KQ``S`KK``S``S`KS``S`K`S`KS``S``S`KS``S`KK``S`KS``S`K`S``SKKK`KK`K`SK``S`K``S``S`KQ``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S``SKK`KK``S``S``SKK``SKK`K``S``S`KS``S`KK``S`KS``S`K`S`KS``S`K`S`KK``S``SKK``SKK`KK`K``SKS
-
-SKS program:
-P = ````S``SKK``SKK``S``S`KQ``S`KK``S``S`KS``S`KK``S`KS``S`K`S``SKKK`KK``S`K``S``S`KQ``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S``SKK`KK``S``S``SKK``SKK`K``S`KS``S`KK``S``SKK``SKK`K``SKS
+P = `MR
+P = `M`K``SKS
+*P = ````S``SKK``SKK``S``S`KQ``S`K``S`KK``S``S`KS``S`K`S`KS``S``S`KS``S`KK``S`KS``S`K`S``S``S``SKK`K``S`K`S`KK``S`KS``S`KK``S``SKK`KK`K`KKK`KK`K`SK``S``SKK``SKK``S`K``S``S`KQ``S``S`KQ``S``SKK`KS``S``S`KQ``S``SKK`KQ``S``S`KQ``S``SKK`K0``S``SKK`K1``S``SKK`KK``S``S``SKK``SKK`KK`K``SKS
 Serialized (single copy):
-1001110000110111101111100001111100001000011110100011010000100110100011010000100110100001111010000100110100001000011011111000011111000010000100001111011111000010000101111101111100001000010110110111110000100001010110100001000010101101111100001000010101101000010000100110111110000100001010110100001000010101101000010000110100001110001101111011111110000100011010000100110100001111010000100110100001000010011010001101000010011010000100001111010000101011010000100001111100001111100001000000
-(484 bits, fits into 61 bytes, two copies into 121.)
+100111000011011110111110000111110000100001000011110111110000100001011111011111000010000101101101111100001000010101101000010000101011011111000010000101011010000100001001101111100001000010101101000010000101011010000100001101000011111000011111000010000111000110111101111110110111101111100001000011110100001001101000011110100011010000110111110000100001000010001101000010011010000111101000010011010000100001001101000110100001001101000010000111101000011010000101011010000100001111100001111100001000000
+(495 bits, fits nonexactly into 62 bytes, two copies into 124.)
 
 As expected, ``SKS from the end never repeats in reasonable programs, but "10011100" of course can appear in binary imput of the said program.
 The loader does not even contain another copy of "100111".
