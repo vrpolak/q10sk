@@ -2,98 +2,34 @@ use std::env;
 use std::fs::File;
 use std::io::{self, BufRead, Write};
 use std::rc::Rc;
-//use std::str::FromStr;
 
-// L
-//const LOADER: &str = "0010000100011101000100001000111010001000010011110111000010000100011101000100001001111011101000100001000111010001000010011110111011000100001001111011101110010000100111101111";
-// i
-//const LOADER: &str = "001000110100011110010001110000100011110010000100111101111";
-// C
-//const LOADER: &str = "0010001111001000010001110000100011010001110000100001000111000010001111001000111000010001101000010000100001001111011001000110100011110010001110000100011110010000100111101111011011111101111011010011";
-// m
-//const LOADER: &str = "0010000100011101000100011001000111100100001000111000010001101000111000010000100011100001000111100100011100001000110100001000010000100111101100100011010001111001000111000010001111001000010011110111101101111110111101101001100100001001111001001111001000110010000100011101000100001000111010001000010011110111000010000100011101000100001001111011101000100001000111010001000010011110111011000100001001111011101110010000100111101111001000010000100111100100111101111";
-// M
-//const LOADER: &str = "0001000010011110010011110010000100011101000100011001000111100100001000111000010001101000111000010000100011100001000111100100011100001000110100001000010000100111101100100011010001111001000111000010001111001000010011110111101101111110111101101001100100001001111001001111001000110010000100011101000100001000111010001000010011110111000010000100011101000100001001111011101000100001000111010001000010011110111011000100001001111011101110010000100111101111001000010000100111100100111101111";
-// P
 const LOADER: &str = "000010000100111100100111100100001000111010001000110010001111001000010001110000100011010001110000100001000111000010001111001000111000010001101000010000100001001111011001000110100011110010001110000100011110010000100111101111011011111101111011010011001000010011110010011110010001100100001000111010001000010001110100010000100111101110000100001000111010001000010011110111010001000010001110100010000100111101110110001000010011110111011100100001001111011110010000100001001111001001111011110110010011100";
 
-fn substitute_l(input: String) -> String {
-    let pattern = "Sxy(Sxy(Kx(Q), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(S))), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(Q))), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(Zero))), Sxy(Sxy(K, K), Kx(One)))))), Sxy(Sxy(K, K), Kx(K)))";
+fn substitute(input: String, pattern: &str, replacement: char) -> String {
     let mut output = String::new();
     let mut start = 0;
-
     while let Some(pos) = input[start..].find(pattern) {
         output.push_str(&input[start..start + pos]);
-        output.push('L');
+        output.push(replacement);
         start += pos + pattern.len();
     }
-
-    output.push_str(&input[start..]);
-    output
-}
-
-fn substitute_i(input: String) -> String {
-    let pattern = "Sxy(Kx(Sx(Kx(K))), Sxy(Kx(S), Sxy(Kx(K), Sxy(Sxy(K, K), Kx(K)))))";
-    let mut output = String::new();
-    let mut start = 0;
-
-    while let Some(pos) = input[start..].find(pattern) {
-        output.push_str(&input[start..start + pos]);
-        output.push('i');
-        start += pos + pattern.len();
-    }
-
-    output.push_str(&input[start..]);
-    output
-}
-
-fn substitute_c(input: String) -> String {
-    let pattern = "Sxy(Kx(K), Sxy(Sxy(Kx(S), Sxy(Kx(Sx(Kx(S))), Sxy(Sxy(Kx(S), Sxy(Kx(K), Sxy(Kx(S), Sxy(Kx(Sx(Sxy(Sxy(Sxy(K, K), Kx(i)), Kx(Kx(K))))), K)))), Kx(K)))), Kx(Sx(K))))";
-    let mut output = String::new();
-    let mut start = 0;
-
-    while let Some(pos) = input[start..].find(pattern) {
-        output.push_str(&input[start..start + pos]);
-        output.push('C');
-        start += pos + pattern.len();
-    }
-
-    output.push_str(&input[start..]);
-    output
-}
-
-fn substitute_m(input: String) -> String {
-    let pattern = "Sxy(Sxy(Kx(Q), Sxy(Kx(C), Sxy(Sxy(K, K), Sxy(K, K)))), Sxy(Kx(L), Sxy(Sxy(Sxy(K, K), Sxy(K, K)), Kx(K))))";
-    let mut output = String::new();
-    let mut start = 0;
-
-    while let Some(pos) = input[start..].find(pattern) {
-        output.push_str(&input[start..start + pos]);
-        output.push('m');
-        start += pos + pattern.len();
-    }
-
-    output.push_str(&input[start..]);
-    output
-}
-
-fn substitute_mm(input: String) -> String {
-    let pattern = "Sxyz(Sxy(K, K), Sxy(K, K), m)";
-    let mut output = String::new();
-    let mut start = 0;
-
-    while let Some(pos) = input[start..].find(pattern) {
-        output.push_str(&input[start..start + pos]);
-        output.push('M');
-        start += pos + pattern.len();
-    }
-
     output.push_str(&input[start..]);
     output
 }
 
 fn substitute_all(input: String) -> String {
-    substitute_mm(substitute_m(substitute_c(substitute_i(substitute_l(input)))))
+    let substitutions = [
+        ("Sxy(Sxy(Kx(Q), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(S))), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(Q))), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(Zero))), Sxy(Sxy(K, K), Kx(One)))))), Sxy(Sxy(K, K), Kx(K)))", 'L'),
+        ("Sxy(Kx(Sx(Kx(K))), Sxy(Kx(S), Sxy(Kx(K), Sxy(Sxy(K, K), Kx(K)))))", 'i'),
+        ("Sxy(Kx(K), Sxy(Sxy(Kx(S), Sxy(Kx(Sx(Kx(S))), Sxy(Sxy(Kx(S), Sxy(Kx(K), Sxy(Kx(S), Sxy(Kx(Sx(Sxy(Sxy(Sxy(K, K), Kx(i)), Kx(Kx(K))))), K)))), Kx(K)))), Kx(Sx(K))))", 'C'),
+        ("Sxy(Sxy(Kx(Q), Sxy(Kx(C), Sxy(Sxy(K, K), Sxy(K, K)))), Sxy(Kx(L), Sxy(Sxy(Sxy(K, K), Sxy(K, K)), Kx(K))))", 'm'),
+        ("Sxyz(Sxy(K, K), Sxy(K, K), m)", 'M'),
+    ];
+    let mut output = input;
+    for (pattern, replacement) in substitutions {
+        output = substitute(output, pattern, replacement);
+    }
+    output
 }
 
 #[derive(Debug)]
@@ -116,7 +52,6 @@ enum Node {
 
 impl Node {
     fn rc_apply(rc_self: Rc<Node>, other: Rc<Node>) -> Rc<Node> {
-        // This also performs half-lazy evaluation.
         match &*rc_self {
             Node::K => Rc::new(Node::Kx(Rc::clone(&other))),
             Node::Kx(x) => Rc::clone(&x),
@@ -135,9 +70,7 @@ impl Node {
     }
 
     fn one_step_normalize(rc_self: Rc<Node>) -> Option<Rc<Node>> {
-//        println!("starting normalization of {:?}", &rc_self);
         let result = match &*rc_self {
-            // This performs one step towards full normalization, but no I/O.
             Node::Sxyz(x, y, z) => Some(Node::rc_apply(Node::rc_apply(Rc::clone(&x), Rc::clone(&z)), Node::rc_apply(Rc::clone(&y), Rc::clone(&z)))),
             Node::Apply(f, x) => match Node::one_step_normalize(Rc::clone(&f)) {
                 Some(nf) => Some(Node::rc_apply(nf, Rc::clone(&x))),
@@ -145,7 +78,6 @@ impl Node {
             }
             _ => None,
         };
-//        println!("normalization ended with {:?}", &result);
         result
     }
 
@@ -154,61 +86,28 @@ impl Node {
         let node = parse_node(&mut chars, 0)?;
         let next_char = chars.next();
         if next_char.is_some() {
-            println!("Next char {:?}", next_char);
             panic!("Here")
+        } else {
+            Ok(node)
         }
-        Ok(node)
     }
 }
-
-//impl FromStr for Node {
-//    type Err = ();
-//
-//    fn from_str(s: &str) -> Result<Self, Self::Err> {
-//        let mut chars = s.chars();
-//        let node = parse_node(&mut chars)?;
-//        if chars.next().is_some() {
-//            panic!("Here")
-//        } else {
-//            Ok(*node)
-//        }
-//    }
-//}
 
 fn parse_node(chars: &mut std::str::Chars, level: u8) -> Result<Rc<Node>, ()> {
     let result = match chars.next() {
         Some('1') => {
-//            println!("Read 1");
             match chars.next() {
-                Some('1') => {
-//                    println!("Read 1: K");
-                    Ok(Rc::new(Node::K))
-                },
+                Some('1') => Ok(Rc::new(Node::K)),
                 Some('0') => {
-//                    println!("Read 0");
                     match chars.next() {
-                        Some('0') => {
-//                            println!("Read 0: S");
-                            Ok(Rc::new(Node::S))
-                        },
+                        Some('0') => Ok(Rc::new(Node::S)),
                         Some('1') => {
-//                            println!("Read 1");
                             match chars.next() {
-                                Some('0') => {
-//                                    println!("Read 0: Q");
-                                    Ok(Rc::new(Node::Q))
-                                },
+                                Some('0') => Ok(Rc::new(Node::Q)),
                                 Some('1') => {
-//                                    println!("Read 1");
                                     match chars.next() {
-                                        Some('0') => {
-//                                            println!("Read 0: Zero");
-                                            Ok(Rc::new(Node::Zero))
-                                        },
-                                        Some('1') => {
-//                                            println!("Read 1: One");
-                                            Ok(Rc::new(Node::One))
-                                        },
+                                        Some('0') => Ok(Rc::new(Node::Zero)),
+                                        Some('1') => Ok(Rc::new(Node::One)),
                                         _ => panic!("Here"),
                                     }
                                 }
@@ -223,15 +122,12 @@ fn parse_node(chars: &mut std::str::Chars, level: u8) -> Result<Rc<Node>, ()> {
         }
         Some('0') => {
             let new_level = level + 1;
-//            println!("Read 0: ` and entering level {}", new_level);
             let a = parse_node(chars, new_level)?;
-//            println!("Still need to read argument for level {}", new_level);
             let b = parse_node(chars, new_level)?;
             Ok(Node::rc_apply(a, b))
         }
         _ => panic!("Here"),
     };
-//    println!("closing level {} with state {:?}", level, result);
     result
 }
 
@@ -260,58 +156,34 @@ fn main() {
             }
         }
     }
-    println!("Input bits: {:?}", input_bits);
     let mut input_iter = input_bits.iter();
-
-    let mut output_bits = Vec::new();
-
-    println!("starting state {:?}", &substitute_all(format!("{:?}", &state)));
     for _ in 0..max_steps {
         let maybe_new_state = Node::one_step_normalize(Rc::clone(&state));
-        if maybe_new_state.is_some() {
-            state = maybe_new_state.unwrap();
-            println!("new state no io: {:?}\n", &substitute_all(format!("{:?}", &state)));
-            continue
+        if let Some(new_state) = maybe_new_state {
+            state = new_state;
+            continue;
         }
-        println!("old state is io or halt.");
         state = match &*state {
             Node::ZeroX(x) => {
-                output_bits.push(false);
+                writeln!(output_file, "0").unwrap();
                 Rc::clone(&x)
             },
             Node::OneX(x) => {
-                output_bits.push(true);
+                writeln!(output_file, "1").unwrap();
                 Rc::clone(&x)
             },
             Node::Qxy(x, y) => {
                 match input_iter.next() {
-                    Some(false) => {
-                        println!("Next input bit is 0, choosing first.");
-                        Rc::clone(&x)
-                    },
-                    Some(true) => {
-                        println!("Next input bit is 1, choosing second.");
-                        Rc::clone(&y)
-                    },
+                    Some(false) => Rc::clone(&x),
+                    Some(true) => Rc::clone(&y),
                     _ => panic!("End of input."),
                 }
             },
             _ => {
-                panic!("Halted")
+                println!("Halted in state {:?}", &substitute_all(format!("{:?}", &state)));
+                return
             },
         };
-        println!("new state after io: {:?}", &substitute_all(format!("{:?}", &state)));
     }
-    println!("iteration limit reached.");
-
-    for i in 0..output_bits.len() {
-        writeln!(
-            output_file,
-            "{}",
-            match output_bits[i] {
-                false => '0',
-                true => '1',
-            },
-        ).unwrap();
-    }
+    println!("Iteration limit reached in state {:?}", &substitute_all(format!("{:?}", &state)));
 }
