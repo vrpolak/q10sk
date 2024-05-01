@@ -19,11 +19,11 @@ fn substitute(input: String, pattern: &str, replacement: char) -> String {
 
 fn substitute_all(input: String) -> String {
     let substitutions = [
-        ("Sxy(Sxy(Kx(Q), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(S))), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(Q))), Sxy(Sxy(Kx(Q), Sxy(Sxy(K, K), Kx(Zero))), Sxy(Sxy(K, K), Kx(One)))))), Sxy(Sxy(K, K), Kx(K)))", 'L'),
-        ("Sxy(Kx(Sx(Kx(K))), Sxy(Kx(S), Sxy(Kx(K), Sxy(Sxy(K, K), Kx(K)))))", 'i'),
-        ("Sxy(Kx(K), Sxy(Sxy(Kx(S), Sxy(Kx(Sx(Kx(S))), Sxy(Sxy(Kx(S), Sxy(Kx(K), Sxy(Kx(S), Sxy(Kx(Sx(Sxy(Sxy(Sxy(K, K), Kx(i)), Kx(Kx(K))))), K)))), Kx(K)))), Kx(Sx(K))))", 'C'),
-        ("Sxy(Sxy(Kx(Q), Sxy(Kx(C), Sxy(Sxy(K, K), Sxy(K, K)))), Sxy(Kx(L), Sxy(Sxy(Sxy(K, K), Sxy(K, K)), Kx(K))))", 'm'),
-        ("Sxyz(Sxy(K, K), Sxy(K, K), m)", 'M'),
+        ("Sxy(Sxy(Kx(Q), Sxy(Sxy(Kx(Q), Sxy(I, Kx(S))), Sxy(Sxy(Kx(Q), Sxy(I, Kx(Q))), Sxy(Sxy(Kx(Q), Sxy(I, Kx(Zero))), Sxy(I, Kx(One)))))), Sxy(I, Kx(K)))", 'L'),
+        ("Sxy(Kx(Sx(Kx(K))), Sxy(Kx(S), Sxy(Kx(K), Sxy(I, Kx(K)))))", 'i'),
+        ("Sxy(Kx(K), Sxy(Sxy(Kx(S), Sxy(Kx(Sx(Kx(S))), Sxy(Sxy(Kx(S), Sxy(Kx(K), Sxy(Kx(S), Sxy(Kx(Sx(Sxy(Sxy(I, Kx(i)), Kx(Kx(K))))), K)))), Kx(K)))), Kx(SK)))", 'C'),
+        ("Sxy(Sxy(Kx(Q), Sxy(Kx(C), SII)), Sxy(Kx(L), Sxy(SII, Kx(K))))", 'm'),
+        ("SIIx(m)", 'M'),
     ];
     let mut output = input;
     for (pattern, replacement) in substitutions {
@@ -40,6 +40,11 @@ enum Node {
     Sx(Rc<Node>),
     Sxy(Rc<Node>, Rc<Node>),
     Sxyz(Rc<Node>, Rc<Node>, Rc<Node>),
+    SK,
+    I,
+    SI,
+    SII,
+    SIIx(Rc<Node>),
     Q,
     Qx(Rc<Node>),
     Qxy(Rc<Node>, Rc<Node>),
@@ -53,11 +58,25 @@ enum Node {
 impl Node {
     fn rc_apply(rc_self: Rc<Node>, other: Rc<Node>) -> Rc<Node> {
         match &*rc_self {
-            Node::K => Rc::new(Node::Kx(Rc::clone(&other))),
+            Node::K => match &*other {
+                Node::I => Rc::new(Node::SK),
+                _ => Rc::new(Node::Kx(Rc::clone(&other))),
+            },
             Node::Kx(x) => Rc::clone(&x),
-            Node::S => Rc::new(Node::Sx(Rc::clone(&other))),
+            Node::S => match &*other {
+                Node::K => Rc::new(Node::SK),
+                Node::I => Rc::new(Node::SI),
+                _ => Rc::new(Node::Sx(Rc::clone(&other))),
+            },
             Node::Sx(x) => Rc::new(Node::Sxy(Rc::clone(&x), Rc::clone(&other))),
             Node::Sxy(x, y) => Rc::new(Node::Sxyz(Rc::clone(&x), Rc::clone(&y), Rc::clone(&other))),
+            Node::SK => Rc::new(Node::I),
+            Node::I => Rc::clone(&other),
+            Node::SI => match &*other {
+                Node::I => Rc::new(Node::SII),
+                _ => Rc::new(Node::Sxy(Rc::new(Node::I), Rc::clone(&other))),
+            },
+            Node::SII => Rc::new(Node::SIIx(Rc::clone(&other))),
             Node::Q => Rc::new(Node::Qx(Rc::clone(&other))),
             Node::Qx(x) => Rc::new(Node::Qxy(Rc::clone(&x), Rc::clone(&other))),
             Node::Qxy(x, y) => Rc::new(Node::Qxy(Node::rc_apply(Rc::clone(&x), Rc::clone(&other)), Node::rc_apply(Rc::clone(&y), Rc::clone(&other)))),
@@ -72,6 +91,7 @@ impl Node {
     fn one_step_normalize(rc_self: Rc<Node>) -> Option<Rc<Node>> {
         let result = match &*rc_self {
             Node::Sxyz(x, y, z) => Some(Node::rc_apply(Node::rc_apply(Rc::clone(&x), Rc::clone(&z)), Node::rc_apply(Rc::clone(&y), Rc::clone(&z)))),
+            Node::SIIx(x) => Some(Node::rc_apply(Rc::clone(&x), Rc::clone(&x))),
             Node::Apply(f, x) => match Node::one_step_normalize(Rc::clone(&f)) {
                 Some(nf) => Some(Node::rc_apply(nf, Rc::clone(&x))),
                 _ => None,
@@ -161,8 +181,10 @@ fn main() {
         let maybe_new_state = Node::one_step_normalize(Rc::clone(&state));
         if let Some(new_state) = maybe_new_state {
             state = new_state;
+            //println!("Non-full normalization {:?}", &substitute_all(format!("{:?}", &state)));
             continue;
         }
+        //println!("Full normalization {:?}", &substitute_all(format!("{:?}", &state)));
         state = match &*state {
             Node::ZeroX(x) => {
                 writeln!(output_file, "0").unwrap();
