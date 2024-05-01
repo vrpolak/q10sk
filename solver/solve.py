@@ -24,9 +24,10 @@ The input contains an equation, both sides in unlambda format.
 The left hand side must be in form of an unknown function applied to several arguments.
 The symbols for the function and arguments mus be unique and different from Q, 1, 0, S, K.
 The right hand side than contains arbitrary expression
-with any number of copies of left hand side symbols and Q, 1, 0, S, K symbols.
+with any number of copies of left hand side symbols and Q, 1, 0, S, K symbols and new symbols.
 The solution is also an equation, but with left hand side being only the unknown function
-and the right hand side is an expression containing only Q, 1, 0, S, K symbols.
+and the right hand side is an expression containing only Q, 1, 0, S, K symbols and new symbols
+(no symbols from left hand side of the input).
 """
 
 
