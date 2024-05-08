@@ -1,9 +1,6 @@
-use std::env;
 use std::fs::File;
-use std::io::{self, BufRead, Write};
+use std::io::{self, BufRead};
 use std::rc::Rc;
-
-const LOADER: &str = "000010000100111100100111100100001000111010001000110010001111001000010001110000100011010001110000100001000111000010001111001000111000010001101000010000100001001111011001000110100011110010001110000100011110010000100111101111011011111101111011010011001000010011110010011110010001100100001000111010001000010001110100010000100111101110000100001000111010001000010011110111010001000010001110100010000100111101110110001000010011110111011100100001001111011110010000100001001111001001111011110110010011100";
 
 fn substitute(input: String, pattern: &str, replacement: char) -> String {
     let mut output = String::new();
@@ -17,7 +14,7 @@ fn substitute(input: String, pattern: &str, replacement: char) -> String {
     output
 }
 
-fn substitute_all(input: String) -> String {
+pub fn substitute_all(input: String) -> String {
     let substitutions = [
         ("Sxy(Sxy(Kx(Q), Sxy(Sxy(Kx(Q), Sxy(I, Kx(S))), Sxy(Sxy(Kx(Q), Sxy(I, Kx(Q))), Sxy(Sxy(Kx(Q), Sxy(I, Kx(Zero))), Sxy(I, Kx(One)))))), Sxy(I, Kx(K)))", 'L'),
         ("Sxy(Kx(Sx(Kx(K))), Sxy(Kx(S), Sxy(Kx(K), Sxy(I, Kx(K)))))", 'i'),
@@ -33,7 +30,7 @@ fn substitute_all(input: String) -> String {
 }
 
 #[derive(Debug)]
-enum Node {
+pub enum Node {
     K,
     Kx(Rc<Node>),
     S,
@@ -56,7 +53,7 @@ enum Node {
 }
 
 impl Node {
-    fn rc_apply(rc_self: Rc<Node>, other: Rc<Node>) -> Rc<Node> {
+    pub fn rc_apply(rc_self: Rc<Node>, other: Rc<Node>) -> Rc<Node> {
         match &*rc_self {
             Node::K => match &*other {
                 Node::I => Rc::new(Node::SK),
@@ -88,7 +85,7 @@ impl Node {
         }
     }
 
-    fn one_step_normalize(rc_self: Rc<Node>) -> Option<Rc<Node>> {
+    pub fn one_step_normalize(rc_self: Rc<Node>) -> Option<Rc<Node>> {
         let result = match &*rc_self {
             Node::Sxyz(x, y, z) => Some(Node::rc_apply(Node::rc_apply(Rc::clone(&x), Rc::clone(&z)), Node::rc_apply(Rc::clone(&y), Rc::clone(&z)))),
             Node::SIIx(x) => Some(Node::rc_apply(Rc::clone(&x), Rc::clone(&x))),
@@ -151,61 +148,30 @@ fn parse_node(chars: &mut std::str::Chars, level: u8) -> Result<Rc<Node>, ()> {
     result
 }
 
-fn main() {
-    let args: Vec<String> = env::args().collect();
-    if args.len() != 4 {
-        eprintln!("Usage: {} <input_file> <output_file> <max_steps>", args[0]);
-        return;
-    }
+const LOADER: &str = "000010000100111100100111100100001000111010001000110010001111001000010001110000100011010001110000100001000111000010001111001000111000010001101000010000100001001111011001000110100011110010001110000100011110010000100111101111011011111101111011010011001000010011110010011110010001100100001000111010001000010001110100010000100111101110000100001000111010001000010011110111010001000010001110100010000100111101110110001000010011110111011100100001001111011110010000100001001111001001111011110110010011100";
 
-    let input_file = File::open(&args[1]).unwrap();
-    let mut output_file = File::create(&args[2]).unwrap();
+pub fn get_loader_node() -> Rc<Node> {
+    Node::from_str(LOADER).unwrap()
+}
 
-    let max_steps: usize = args[3].parse().unwrap();
+pub struct BinaryVec(Vec<bool>);
 
-    let mut state = Node::from_str(LOADER).unwrap();
+pub fn txt(vec: &Vec<bool>) -> String {
+    vec.iter().map(|b| {if *b {"1"} else {"0"}}).collect::<Vec<_>>().join("")
+}
 
-    let mut input_bits = Vec::new();
+pub fn read_txt(input_file_name: &str) -> Vec<bool> {
+    let input_file = File::open(input_file_name).unwrap();
+    let mut result = Vec::new();
     for line in io::BufReader::new(input_file).lines() {
         let line = line.unwrap();
         for c in line.chars() {
             match c {
-                '0' => input_bits.push(false),
-                '1' => input_bits.push(true),
+                '0' => result.push(false),
+                '1' => result.push(true),
                 _ => (),
             }
         }
     }
-    let mut input_iter = input_bits.iter();
-    for _ in 0..max_steps {
-        let maybe_new_state = Node::one_step_normalize(Rc::clone(&state));
-        if let Some(new_state) = maybe_new_state {
-            state = new_state;
-            //println!("Non-full normalization {:?}", &substitute_all(format!("{:?}", &state)));
-            continue;
-        }
-        //println!("Full normalization {:?}", &substitute_all(format!("{:?}", &state)));
-        state = match &*state {
-            Node::ZeroX(x) => {
-                writeln!(output_file, "0").unwrap();
-                Rc::clone(&x)
-            },
-            Node::OneX(x) => {
-                writeln!(output_file, "1").unwrap();
-                Rc::clone(&x)
-            },
-            Node::Qxy(x, y) => {
-                match input_iter.next() {
-                    Some(false) => Rc::clone(&x),
-                    Some(true) => Rc::clone(&y),
-                    _ => panic!("End of input."),
-                }
-            },
-            _ => {
-                println!("Halted in state {:?}", &substitute_all(format!("{:?}", &state)));
-                return
-            },
-        };
-    }
-    println!("Iteration limit reached in state {:?}", &substitute_all(format!("{:?}", &state)));
+    result
 }
